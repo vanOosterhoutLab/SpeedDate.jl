@@ -48,7 +48,7 @@ function parse_command_line()
             help = "Base name for the output files(s)."
             default = "SpeedDate"
             arg_type = ASCIIString
-        "--scan", "-s"
+        "--scan"
             help = "Whether or not to compute dates across sequences with a sliding window."
             action = :store_true
         "--width", "-w"
@@ -76,5 +76,3 @@ function main()
 end
 
 end
-
-SpeedDate.main()
