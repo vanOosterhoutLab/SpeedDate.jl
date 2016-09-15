@@ -92,7 +92,7 @@ function compute(args)
         end
         dists = distance(m, sequences, args["width"], args["step"])
     else
-        dists = distance(m, sequences)
+        dists, vars = distance(m, sequences)
         for i in 1:length(names1)
             print(distfile, names1[i])
             print(distfile, ", ")
