@@ -46,8 +46,8 @@ function pairwise_dates{D<:EvolutionaryDistance,S<:Sequence}(::Type{D}, sequence
     dists, vars = distance(D, sequences)
     Ts = zeros(Float64, length(dists))
 
-    @inbounds for 1 in 1:length(dist)
-        nmut = convert(Int, ceil(dist * slen))
+    @inbounds for i in 1:length(dist)
+        nmut = convert(Int, ceil(dists[i] * slen))
         Ts[i] = Dating.middle(coaltime(slen, nmut, mu, method))
     end
     return Ts
