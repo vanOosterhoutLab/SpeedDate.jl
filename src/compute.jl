@@ -90,7 +90,7 @@ function compute(args)
         if args["step"] <= 0
             args["step"] = args["width"]
         end
-        dists = distance(m, sequences, args["width"], args["step"])
+        dists = distance(model, sequences, args["width"], args["step"])
     else
         dists, vars = distance(m, sequences)
         for i in 1:length(names1)
