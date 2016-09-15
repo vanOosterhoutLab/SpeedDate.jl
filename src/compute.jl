@@ -77,10 +77,7 @@ function compute(args)
     index, sequences = gather_sequences(args)
     names1, names2 = generate_names_lists(index)
 
-    println(names1)
-    println(names2)
-
-    #=m = lowercase(args["model"])
+    m = lowercase(args["model"])
     if m == "jc69"
         model = JukesCantor69
     elseif m == "k80"
@@ -88,7 +85,25 @@ function compute(args)
     else
         error("Invalid choice of distance model.")
     end
-
+    distfile = open("$(args["outfile"])_distances.txt")
+    if args["scan"]
+        if args["step"] <= 0
+            args["step"] = args["width"]
+        end
+        dists = distance(m, sequences, args["width"], args["step"])
+    else
+        dists = distance(m, sequences)
+        for i in 1:length(names1)
+            print(distfile, names1[i])
+            print(distfile, ", ")
+            print(distfile, names2[i])
+            print(distfile, ", ")
+            print(distfile, dists[i])
+            print(distfile, "\n")
+        end
+    end
+    close(distfile)
+#=
     met = lowercase(args["method"])
     if met == "default"
         dmethod = SpeedDating
@@ -100,15 +115,13 @@ function compute(args)
 
 
 
-    if args["scan"]
-        if args["step"] <= 0
-            args["step"] = args["width"]
-        end
-        times = pairwise_dates(sequences, args["mutation_rate"], model, dmethod, args["width"], args["step"])
-    else
+
+
+        times = pairwise_dates(sequences, args["mutation_rate"], model, dmethod, )
+
         times = pairwise_dates(sequences, args["mutation_rate"], model, dmethod)
         writedlm("$(args["outfile"]).txt", times)
-    end
 =#
+
 
 end
