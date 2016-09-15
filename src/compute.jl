@@ -85,7 +85,7 @@ function compute(args)
     else
         error("Invalid choice of distance model.")
     end
-    distfile = open("$(args["outfile"])_distances.txt")
+    distfile = open("$(args["outfile"])_distances.txt", "w")
     if args["scan"]
         if args["step"] <= 0
             args["step"] = args["width"]
