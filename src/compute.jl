@@ -100,7 +100,6 @@ function compute(args)
 
 
 
-#=
     if args["scan"]
         if args["step"] <= 0
             args["step"] = args["width"]
