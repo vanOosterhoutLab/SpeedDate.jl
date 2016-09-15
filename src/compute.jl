@@ -22,8 +22,8 @@ end
 
 function generate_names_lists(indexer::Indexer)
     l = length(names(indexer))
-    list1 = Vector{ASCIIString}(binomial(l, 2))
-    list2 = Vector{ASCIIString}(binomial(l, 2))
+    list1 = Vector{Symbol}(binomial(l, 2))
+    list2 = Vector{Symbol}(binomial(l, 2))
     k = 0
     for i in 1:l
         for j in i+1:l
