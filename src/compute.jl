@@ -28,8 +28,8 @@ function generate_names_lists(indexer::Indexer)
     for i in 1:l
         for j in i+1:l
             k += 1
-            list1[k] = indexer[i]
-            list2[k] = indexer[j]
+            list1[k] = indexer.names[i]
+            list2[k] = indexer.names[j]
         end
     end
     return list1, list2
