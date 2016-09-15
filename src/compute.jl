@@ -11,7 +11,7 @@ function gather_sequences(args)
         end
     end
     if haskey(args, "file") && typeof(args["file"]) != Void
-        for i in open(args["file"], FASTA)
+        for i in open(FASTAReader, args["file"])
             push!(names, i.name)
             push!(seqs, i.seq)
         end
