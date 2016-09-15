@@ -73,9 +73,14 @@ end
 =#
 
 function compute(args)
-    index, sequences = gather_sequences(args)
 
-    m = lowercase(args["model"])
+    index, sequences = gather_sequences(args)
+    names1, names2 = generate_names_lists(index)
+
+    println(names1)
+    println(names2)
+
+    #=m = lowercase(args["model"])
     if m == "jc69"
         model = JukesCantor69
     elseif m == "k80"
@@ -93,7 +98,7 @@ function compute(args)
         error("Invalid choice of coalescence time estimate method.")
     end
 
-    names1, names2 = generate_names_lists(index)
+
 
 #=
     if args["scan"]
