@@ -29,7 +29,7 @@ function parse_command_line()
         "--model", "-m"
             help = """
             The model used to compute genetic distances.
-            Currently jc69 and k80 are supported.
+            Currently jc69, and k80 are supported.
             """
             arg_type = ASCIIString
             default = "jc69"
@@ -59,6 +59,8 @@ function parse_command_line()
             help = "The number of base pairs the sliding window moves by each iteration."
             arg_type = Int64
             default = -1
+        "--onlydist"
+            action = :store_true
     end
 
     return parse_args(s)

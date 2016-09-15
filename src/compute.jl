@@ -20,21 +20,40 @@ function gather_sequences(args)
     return Indexer(names), seqs
 end
 
-function pairwise_dates{D<:EvolutionaryDistance,S<:Sequence}(sequences::Vector{S},
-    mu::Float64, model::Type{D}, method)
-
-    slen = length(sequences)
-    times = zeros(Float64, slen, slen)
-    for i = 1:slen, j = i+1:slen
-        Dist, Var = distance(model, sequences[i], sequences[j])
-        nmut = convert(Int, ceil(Dist * slen))
-        T = coaltime(length(sequences[i]), nmut, mu, method)
-        mT = Dating.middle(T)
-        times[i, j] = times[j, i] = mT
+function generate_names_lists(indexer::Indexer)
+    l = length(names(indexer))
+    list1 = Vector{ASCIIString}(binomial(l, 2))
+    list2 = Vector{ASCIIString}(binomial(l, 2))
+    k = 0
+    for i in 1:l
+        for j in i+1:l
+            k += 1
+            list1[k] = indexer[i]
+            list2[k] = indexer[j]
+        end
     end
-    return times
+    return list1, list2
 end
 
+function pairwise_dates{D<:EvolutionaryDistance,S<:Sequence}(::Type{D}, sequences::Vector{S},
+    mu::Float64, method)
+
+    slen = length(sequences[1])
+    for seq in sequences
+        @assert length(seq) == slen error("Sequences must be of the same length!")
+    end
+
+    dists, vars = distance(D, sequences)
+    Ts = zeros(Float64, length(dists))
+
+    @inbounds for 1 in 1:length(dist)
+        nmut = convert(Int, ceil(dist * slen))
+        Ts[i] = Dating.middle(coaltime(slen, nmut, mu, method))
+    end
+    return Ts
+end
+
+#=
 function pairwise_dates{D<:EvolutionaryDistance,S<:Sequence}(sequences::Vector{S},
     mu::Float64, model::Type{D}, method, width::Int64, length::Int64)
 
@@ -51,6 +70,7 @@ function pairwise_dates{D<:EvolutionaryDistance,S<:Sequence}(sequences::Vector{S
     end
     return times
 end
+=#
 
 function compute(args)
     index, sequences = gather_sequences(args)
@@ -73,6 +93,9 @@ function compute(args)
         error("Invalid choice of coalescence time estimate method.")
     end
 
+    names1, names2 = generate_names_lists(index)
+
+#=
     if args["scan"]
         if args["step"] <= 0
             args["step"] = args["width"]
@@ -82,4 +105,6 @@ function compute(args)
         times = pairwise_dates(sequences, args["mutation_rate"], model, dmethod)
         writedlm("$(args["outfile"]).txt", times)
     end
+=#
+
 end
