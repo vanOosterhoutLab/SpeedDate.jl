@@ -51,6 +51,23 @@ function write_results(filename::String, names1::Vector{Symbol},
 end
 
 function write_results(filename::String, names1::Vector{Symbol},
+    names2::Vector{Symbol}, values::Matrix{Float64})
+
+    outfile = open(filename, "w")
+    for i in 1:length(names1)
+        print(outfile, names1[i])
+        print(outfile, ", ")
+        print(outfile, names2[i])
+        for value in values[:,i]
+            print(outfile, ", ")
+            print(outfile, value)
+        end
+        print(outfile, "\n")
+    end
+    close(outfile)
+end
+
+function write_results(filename::String, names1::Vector{Symbol},
     names2::Vector{Symbol}, values::Vector{SDResult})
 
     outfile = open(filename, "w")
@@ -69,8 +86,19 @@ function write_results(filename::String, names1::Vector{Symbol},
     close(outfile)
 end
 
+
+
 function dates_from_dists(dists::Vector{Float64}, len::Int, mu::Float64, ::Type{SimpleEstimate})
     Ts = zeros(Float64, length(dists))
+    @inbounds for i in 1:length(dists)
+        nmut = convert(Int, ceil(dists[i] * len))
+        Ts[i] = coaltime(len, nmut, mu, SimpleEstimate)
+    end
+    return Ts
+end
+
+function dates_from_dists(dists::Matrix{Float64}, len::Int, mu::Float64, ::Type{SimpleEstimate})
+    Ts = zeros(Float64, size(dists))
     @inbounds for i in 1:length(dists)
         nmut = convert(Int, ceil(dists[i] * len))
         Ts[i] = coaltime(len, nmut, mu, SimpleEstimate)
