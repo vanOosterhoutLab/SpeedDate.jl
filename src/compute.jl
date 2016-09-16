@@ -1,6 +1,6 @@
 
 function gather_sequences(args)
-    names = Vector{ASCIIString}()
+    names = Vector{String}()
     seqs =  Vector{DNASequence}()
     if haskey(args, "dnaseqs")
         n = 0
@@ -35,7 +35,7 @@ function generate_names_lists(indexer::Indexer)
     return list1, list2
 end
 
-function write_results(filename::ASCIIString, names1::Vector{Symbol},
+function write_results(filename::String, names1::Vector{Symbol},
     names2::Vector{Symbol}, values::Vector{Float64})
 
     outfile = open(filename, "w")
@@ -50,7 +50,7 @@ function write_results(filename::ASCIIString, names1::Vector{Symbol},
     close(outfile)
 end
 
-function write_results(filename::ASCIIString, names1::Vector{Symbol},
+function write_results(filename::String, names1::Vector{Symbol},
     names2::Vector{Symbol}, values::Vector{SDResult})
 
     outfile = open(filename, "w")
@@ -61,7 +61,7 @@ function write_results(filename::ASCIIString, names1::Vector{Symbol},
         print(outfile, ", ")
         print(outfile, lower(values[i]))
         print(outfile, ", ")
-        print(outfile, middle(values[i]))
+        print(outfile, Dating.middle(values[i]))
         print(outfile, ", ")
         print(outfile, upper(values[i]))
         print(outfile, "\n")

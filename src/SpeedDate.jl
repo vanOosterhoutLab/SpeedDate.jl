@@ -19,7 +19,7 @@ function parse_command_line()
     @add_arg_table s["compute"] begin
         "--file", "-f"
             help = "An input file."
-            arg_type = ASCIIString
+            arg_type = String
             required = false
         "--dnaseqs", "-s"
             help = "The first of two DNA sequences to test"
@@ -31,7 +31,7 @@ function parse_command_line()
             The model used to compute genetic distances.
             Currently jc69, and k80 are supported.
             """
-            arg_type = ASCIIString
+            arg_type = String
             default = "jc69"
         "--mutation_rate", "-r"
             help = "The mutation rate to be assumed."
@@ -42,12 +42,12 @@ function parse_command_line()
             The dating method to use.
             Currently 'default' and 'simple' are supported.
             """
-            arg_type = ASCIIString
+            arg_type = String
             default = "default"
         "--outfile", "-o"
             help = "Base name for the output files(s)."
             default = "SpeedDate"
-            arg_type = ASCIIString
+            arg_type = String
         "--scan"
             help = "Whether or not to compute dates across sequences with a sliding window."
             action = :store_true
