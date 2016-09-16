@@ -35,8 +35,8 @@ function generate_names_lists(indexer::Indexer)
     return list1, list2
 end
 
-function write_distances(filename::ASCIIString, names1::Vector{Symbol},
-    names2::Vector{Symbol}, dists::Vector{Float64})
+function write_results(filename::ASCIIString, names1::Vector{Symbol},
+    names2::Vector{Symbol}, values::Vector{Float64})
 
     distfile = open(filename, "w")
     for i in 1:length(names1)
@@ -85,7 +85,7 @@ function compute(args)
     else
         dists, vars = distance(model, sequences)
     end
-    write_distances("$(args["outfile"])_distances.txt", names1, names2, dists)
+    write_results("$(args["outfile"])_distances.txt", names1, names2, dists)
 
     met = lowercase(args["method"])
     if met == "default"
@@ -96,5 +96,5 @@ function compute(args)
         error("Invalid choice of coalescence time estimate method.")
     end
     times = dates_from_dists(dists, slen, args["mutation_rate"], dmethod)
-
+    write_results("$(args["outfile"])_ctimes.txt", names1, names2, times)
 end
