@@ -93,25 +93,30 @@ function write_results(filename::String, names1::Vector{Symbol},
     midfile = open("mid_$filename", "w")
     maxfile = open("max_$filename", "w")
     for i in 1:length(names1)
-        print(outfile, names1[i])
-        print(outfile, ", ")
-        print(outfile, names2[i])
-
+        print(minfile, names1[i])
+        print(minfile, ", ")
+        print(minfile, names2[i])
+        print(midfile, names1[i])
+        print(midfile, ", ")
+        print(midfile, names2[i])
+        print(maxfile, names1[i])
+        print(maxfile, ", ")
+        print(maxfile, names2[i])
         for value in values[:,i]
-            print(outfile, ", ")
-            print(outfile, value)
+            print(minfile, ", ")
+            print(minfile, lower(value))
+            print(midfile, ", ")
+            print(midfile, Dating.middle(value))
+            print(maxfile, ", ")
+            print(maxfile, upper(value))
         end
-
-
-        print(outfile, ", ")
-        print(outfile, lower(values[i]))
-        print(outfile, ", ")
-        print(outfile, Dating.middle(values[i]))
-        print(outfile, ", ")
-        print(outfile, upper(values[i]))
-        print(outfile, "\n")
+        print(minfile, "\n")
+        print(midfile, "\n")
+        print(maxfile, "\n")
     end
-    close(outfile)
+    close(minfile)
+    close(midfile)
+    close(maxfile)
 end
 
 
