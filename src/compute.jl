@@ -54,7 +54,7 @@ function dates_from_dists(dists::Vector{Float64}, len::Int, mu::Float64, method)
     Ts = zeros(Float64, length(dists))
     @inbounds for i in 1:length(dists)
         nmut = convert(Int, ceil(dists[i] * len))
-        Ts[i] = Dating.middle(coaltime(slen, nmut, mu, method))
+        Ts[i] = Dating.middle(coaltime(len, nmut, mu, method))
     end
     return Ts
 end
