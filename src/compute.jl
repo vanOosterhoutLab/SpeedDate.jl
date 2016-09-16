@@ -61,6 +61,7 @@ end
 
 function compute(args)
 
+    println("Loading sequences.")
     index, sequences = gather_sequences(args)
     names1, names2 = generate_names_lists(index)
 
@@ -77,15 +78,6 @@ function compute(args)
     else
         error("Invalid choice of distance model.")
     end
-    if args["scan"]
-        if args["step"] <= 0
-            args["step"] = args["width"]
-        end
-        dists, vars = distance(model, sequences, args["width"], args["step"])
-    else
-        dists, vars = distance(model, sequences)
-    end
-    write_results("$(args["outfile"])_distances.txt", names1, names2, dists)
 
     met = lowercase(args["method"])
     if met == "default"
@@ -95,6 +87,19 @@ function compute(args)
     else
         error("Invalid choice of coalescence time estimate method.")
     end
+
+    if args["scan"]
+        if args["step"] <= 0
+            args["step"] = args["width"]
+        end
+        winout = distance(model, sequences, args["width"], args["step"])
+        show(winout)
+
+    else
+        dists, vars = distance(model, sequences)
+    end
+    write_results("$(args["outfile"])_distances.txt", names1, names2, dists)
+
     times = dates_from_dists(dists, slen, args["mutation_rate"], dmethod)
     write_results("$(args["outfile"])_ctimes.txt", names1, names2, times)
 end
