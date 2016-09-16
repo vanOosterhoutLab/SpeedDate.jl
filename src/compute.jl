@@ -86,6 +86,33 @@ function write_results(filename::String, names1::Vector{Symbol},
     close(outfile)
 end
 
+function write_results(filename::String, names1::Vector{Symbol},
+    names2::Vector{Symbol}, values::Matrix{SDResult})
+
+    minfile = open("min_$filename", "w")
+    midfile = open("mid_$filename", "w")
+    maxfile = open("max_$filename", "w")
+    for i in 1:length(names1)
+        print(outfile, names1[i])
+        print(outfile, ", ")
+        print(outfile, names2[i])
+
+        for value in values[:,i]
+            print(outfile, ", ")
+            print(outfile, value)
+        end
+
+
+        print(outfile, ", ")
+        print(outfile, lower(values[i]))
+        print(outfile, ", ")
+        print(outfile, Dating.middle(values[i]))
+        print(outfile, ", ")
+        print(outfile, upper(values[i]))
+        print(outfile, "\n")
+    end
+    close(outfile)
+end
 
 
 function dates_from_dists(dists::Vector{Float64}, len::Int, mu::Float64, ::Type{SimpleEstimate})
@@ -157,6 +184,7 @@ function compute(args)
             args["step"] = args["width"]
         end
         dists, vars, windows = distance(model, sequences, args["width"], args["step"])
+        slen = args["width"]
     else
         dists, vars = distance(model, sequences)
     end
