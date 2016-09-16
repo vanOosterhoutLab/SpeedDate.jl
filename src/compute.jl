@@ -78,8 +78,8 @@ function dates_from_dists(dists::Vector{Float64}, len::Int, mu::Float64, ::Type{
     return Ts
 end
 
-function dates_from_dists{T<:Union{Vector,Matrix}}(dists::T{Float64}, len::Int, mu::Float64, ::Type{SpeedDating})
-    Ts = T{SDResult}(size(dists))
+function dates_from_dists{A<:Union{Vector,Matrix}}(dists::A{Float64}, len::Int, mu::Float64, ::Type{SpeedDating})
+    Ts = A{SDResult}(size(dists))
     @inbounds for i in 1:length(dists)
         nmut = convert(Int, ceil(dists[i] * len))
         Ts[i] = coaltime(len, nmut, mu, SpeedDating)
