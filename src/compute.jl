@@ -82,7 +82,7 @@ function dates_from_dists(dists::Vector{Float64}, len::Int, mu::Float64, ::Type{
     Ts = Vector{SDResult}(length(dists))
     @inbounds for i in 1:length(dists)
         nmut = convert(Int, ceil(dists[i] * len))
-        Ts[i] = coaltime(len, nmut, mu, SimpleEstimate)
+        Ts[i] = coaltime(len, nmut, mu, SpeedDating)
     end
     return Ts
 end
