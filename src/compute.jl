@@ -101,6 +101,7 @@ function dates_from_dists(dists::Matrix{Float64}, len::Int, mu::Float64, ::Type{
     Ts = zeros(Float64, size(dists))
     @inbounds for i in 1:length(dists)
         nmut = convert(Int, ceil(dists[i] * len))
+        println(nmut)
         Ts[i] = coaltime(len, nmut, mu, SimpleEstimate)
     end
     return Ts
