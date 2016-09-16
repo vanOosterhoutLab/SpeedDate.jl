@@ -38,16 +38,16 @@ end
 function write_results(filename::ASCIIString, names1::Vector{Symbol},
     names2::Vector{Symbol}, values::Vector{Float64})
 
-    distfile = open(filename, "w")
+    outfile = open(filename, "w")
     for i in 1:length(names1)
-        print(distfile, names1[i])
-        print(distfile, ", ")
-        print(distfile, names2[i])
-        print(distfile, ", ")
-        print(distfile, dists[i])
-        print(distfile, "\n")
+        print(outfile, names1[i])
+        print(outfile, ", ")
+        print(outfile, names2[i])
+        print(outfile, ", ")
+        print(outfile, values[i])
+        print(outfile, "\n")
     end
-    close(distfile)
+    close(outfile)
 end
 
 function dates_from_dists(dists::Vector{Float64}, len::Int, mu::Float64, method)
