@@ -78,8 +78,8 @@ function dates_from_dists(dists::Vector{Float64}, len::Int, mu::Float64, ::Type{
     return Ts
 end
 
-function dates_from_dists(dists::Vector{Float64}, len::Int, mu::Float64, ::Type{SpeedDating})
-    Ts = Vector{SDResult}(length(dists))
+function dates_from_dists{T<:Union{Vector,Matrix}}(dists::T{Float64}, len::Int, mu::Float64, ::Type{SpeedDating})
+    Ts = T{SDResult}(size(dists))
     @inbounds for i in 1:length(dists)
         nmut = convert(Int, ceil(dists[i] * len))
         Ts[i] = coaltime(len, nmut, mu, SpeedDating)
@@ -106,7 +106,6 @@ function compute(args)
     else
         error("Invalid choice of distance model.")
     end
-
     met = lowercase(args["method"])
     if met == "default"
         dmethod = SpeedDating
@@ -120,9 +119,7 @@ function compute(args)
         if args["step"] <= 0
             args["step"] = args["width"]
         end
-        winout = distance(model, sequences, args["width"], args["step"])
-        show(winout)
-
+        dists, vars, windows = distance(model, sequences, args["width"], args["step"])
     else
         dists, vars = distance(model, sequences)
     end
