@@ -193,6 +193,8 @@ function compute(args)
     end
     write_results("$(args["outfile"])_distances.txt", names1, names2, dists)
 
-    times = dates_from_dists(dists, slen, args["mutation_rate"], dmethod)
-    write_results("$(args["outfile"])_ctimes.txt", names1, names2, times)
+    if !args["onlydist"]
+        times = dates_from_dists(dists, slen, args["mutation_rate"], dmethod)
+        write_results("$(args["outfile"])_ctimes.txt", names1, names2, times)
+    end
 end
