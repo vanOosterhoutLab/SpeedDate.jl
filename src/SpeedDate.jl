@@ -1,10 +1,14 @@
+__precompile__()
+
 module SpeedDate
 
 using ArgParse
 using Bio: Seq, Var, Phylo.Dating, Indexers
+using Gtk.ShortNames
 
 include("compute.jl")
 include("visualize.jl")
+include("gtk_gui.jl")
 
 function parse_command_line()
     s = ArgParseSettings()
@@ -13,6 +17,9 @@ function parse_command_line()
     @add_arg_table s begin
         "compute"
             help = "Compute coalescence times."
+            action = :command
+        "interavtive"
+            help = "Start the interactive GUI for SpeedDate"
             action = :command
     end
 
@@ -71,6 +78,9 @@ function main()
         arguments = parse_command_line()
         if arguments["%COMMAND%"] == "compute"
             compute(arguments["compute"])
+        end
+        if arguments["%COMMAND%"] == "interactive"
+            start_interactive_app()
         end
     #catch err
         #(STDOUT, "SpeedDate could not complete analysis.\nReason:\n$(err.msg)\n")
