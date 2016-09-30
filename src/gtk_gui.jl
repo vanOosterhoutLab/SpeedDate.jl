@@ -36,7 +36,14 @@ function start_interactive_app()
 
     fl = signal_connect(load_button, "clicked") do widget
         file = open_dialog("Choose a FASTA file", win, ("*.fas","*.fasta"))
-        SEQUENCES = collect(open(FASTAReader, file))
+        iostream = open(FASTAReader, file)
+        try
+            SEQUENCES = collect(iostream)
+        catch
+            error_dialog("Something went wrong reading in your file!")
+        finally
+            close(iostream)
+        end
     end
 
     flen = signal_connect(len_button, "clicked") do widget
