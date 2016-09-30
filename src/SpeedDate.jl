@@ -18,7 +18,7 @@ function parse_command_line()
         "compute"
             help = "Compute coalescence times."
             action = :command
-        "interavtive"
+        "interactive"
             help = "Start the interactive GUI for SpeedDate"
             action = :command
     end
