@@ -39,9 +39,9 @@ function start_interactive_app()
         iostream = open(FASTAReader, file)
         try
             SEQUENCES = collect(iostream)
-            info_dialog("Completed reading FASTA file!")
+            info_dialog("Completed reading FASTA file!", win)
         catch
-            error_dialog("Something went wrong reading in your file!")
+            error_dialog("Something went wrong reading in your file!", win)
         finally
             close(iostream)
         end
