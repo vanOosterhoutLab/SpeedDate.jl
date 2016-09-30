@@ -2,7 +2,7 @@
 function start_interactive_app()
     # Application Data
     SEQUENCES = Vector{DNASequence}()
-    μ = 10e-9
+    μ = "10e-9"
 
     # User interface
     win = @Window("Speed Date")
@@ -41,6 +41,7 @@ function start_interactive_app()
 
     flen = signal_connect(len_button, "clicked") do widget
         println(length(SEQUENCES))
+        println(getproperty(μ_entry, :text, String))
     end
 
 
