@@ -29,6 +29,7 @@ function start_interactive_app()
     push!(μ_box, μ_label)
     push!(μ_box, μ_entry)
     push!(assumptions_box, μ_box)
+    push!(assumptions_frame, assumptions_box)
     g[2,1] = assumptions_frame
 
     ## Signals and behaviour
