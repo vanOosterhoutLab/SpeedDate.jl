@@ -2,23 +2,34 @@
 function start_interactive_app()
     # Application Data
     SEQUENCES = Vector{DNASequence}()
+    μ = 10e-9
 
     # User interface
     win = @Window("Speed Date")
-    file_frame = @Frame()
-    assumptions_frame = @Frame("Assumptions")
+
+    g = @Grid()
 
     ## Load and Saving data buttons
     data_frame = @Frame("Data")
     data_button_box = @ButtonBox(:h)
     load_button = @Button("Load FASTA file")
     len_button = @Button("Length")
-    push!(win, data_frame)
     push!(data_frame, data_button_box)
     push!(data_button_box, load_button)
     push!(data_button_box, len_button)
+    g[1,1] = data_frame
 
-
+    ## Calculation and model assumptions
+    assumptions_frame = @Frame("Assumptions")
+    assumptions_box = @Box(:v)
+    μ_box = @Box(:h)
+    μ_label = @Label("Mutation Rate:")
+    μ_entry = @Entry()
+    setproperty!(μ_entry, :text, μ)
+    push!(μ_box, μ_label)
+    push!(μ_box, μ_entry)
+    push!(assumptions_box, μ_box)
+    g[2,1] = assumptions_frame
 
     ## Signals and behaviour
 
@@ -33,7 +44,7 @@ function start_interactive_app()
 
 
 
-
+    push!(win, g)
     showall(win)
     c = Condition()
     signal_connect(win, :destroy) do widget
