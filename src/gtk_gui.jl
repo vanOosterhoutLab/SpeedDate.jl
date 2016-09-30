@@ -16,7 +16,7 @@ function start_interactive_app()
     push!(win, data_frame)
     push!(data_frame, data_button_box)
     push!(data_button_box, load_button)
-    push!(data_button_Box, len_button)
+    push!(data_button_box, len_button)
 
 
 
