@@ -1,21 +1,26 @@
 
 function start_interactive_app()
-    ### Application Data
+    # Application Data
     SEQUENCES = Vector{DNASequence}()
 
-    ### User interface
+    # User interface
     win = @Window("Speed Date")
     file_frame = @Frame()
     assumptions_frame = @Frame("Assumptions")
 
+    ## Load and Saving data buttons
+    data_frame = @Frame("Data")
+    data_button_box = @ButtonBox(:h)
     load_button = @Button("Load FASTA file")
-    push!(win, load_button)
     len_button = @Button("Length")
-    push!(win, len_button)
+    push!(win, data_frame)
+    push!(data_frame, data_button_box)
+    push!(data_button_box, load_button)
+    push!(data_button_Box, len_button)
 
 
 
-    ### Signals and behaviour
+    ## Signals and behaviour
 
     fl = signal_connect(load_button, "clicked") do widget
         file = open_dialog("Choose a FASTA file", win, ("*.fas","*.fasta"))
