@@ -71,7 +71,7 @@ function start_interactive_app()
     push!(win, g)
     setproperty!(g, :column_spacing, 15)
     setproperty!(g, :row_spacing, 15)
-    setproperty!(g, :expand, true)
+    setproperty!(g, :column_homogeneous, true)
     showall(win)
     c = Condition()
     signal_connect(win, :destroy) do widget
