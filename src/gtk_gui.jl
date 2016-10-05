@@ -39,23 +39,18 @@ function start_interactive_app()
 
     ## Sliding window settings
     window_frame = @Frame("Sliding Window")
-    window_box = @Box(:v)
     slide_check = @CheckButton("Use Sliding Windows")
-    window_box_2 = @Box(:h)
     size_label = @Label("Window Size")
     size_entry = @Entry()
-    window_box_3 = @Box(:v)
-    window_box_4 = @Box(:v)
     step_label = @Label("Step Size")
     step_entry = @Entry()
-    push!(window_box_3, size_label)
-    push!(window_box_4, size_entry)
-    push!(window_box_3, step_label)
-    push!(window_box_4, step_entry)
-    push!(window_box_2, window_box_3)
-    push!(window_box_2, window_box_4)
-    push!(window_box, slide_check)
-    push!(window_box, window_box_2)
+    wg = @Grid()
+    setproperty!(g, :column_homogeneous, true)
+    wg[1:2,1] = slide_check
+    wg[2,1] = size_label
+    wg[2,2] = step_label
+    wg[3,1] = size_entry
+    wg[3,2] = step_entry
     push!(window_frame, window_box)
     g[3, 1] = window_frame
 
