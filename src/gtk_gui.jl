@@ -35,10 +35,10 @@ function start_interactive_app()
     push!(assumptions_frame, assumptions_box)
     push!(assumptions_box, model_frame)
     push!(model_frame, model_box)
-    push!(model_box, μ_box)
     push!(model_box, JC69_radio)
     push!(model_box, K80_radio)
-    g[1,2] = assumptions_frame
+    push!(model_box, μ_box)
+    g[1,3] = assumptions_frame
 
 
     ## Sliding window settings
