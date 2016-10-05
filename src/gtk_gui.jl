@@ -57,8 +57,8 @@ function start_interactive_app()
             args["model"] = getproperty(JC69_radio, :active, Bool) ? "jc69" : "k80"
             args["method"] = "default"
             args["scan"] = getproperty(slide_check, :active, Bool)
-            args["width"] = parse(Int64, getproperty(, :text, String))
-            args["step"] = parse(Int64, getproperty(, :text, String))
+            args["width"] = parse(Int64, getproperty(size_entry, :text, String))
+            args["step"] = parse(Int64, getproperty(step_entry, :text, String))
             args["mutation_rate"] = parse(Float64, getproperty(μ_entry, :text, String))
             args["outfile"] = save_dialog("Enter a basename for results files", win)
             args["onlydist"] = false
