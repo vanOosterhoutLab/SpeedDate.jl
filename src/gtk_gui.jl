@@ -57,7 +57,7 @@ function start_interactive_app()
         end
     end
 
-    flen = signal_connect(len_button, "clicked") do widget
+    flen = signal_connect(go_button, "clicked") do widget
         println(length(SEQUENCES))
         println(getproperty(μ_entry, :text, String))
     end
