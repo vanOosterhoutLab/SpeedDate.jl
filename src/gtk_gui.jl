@@ -10,18 +10,16 @@ function start_interactive_app()
     g = @Grid()
 
     ## Load and Saving data buttons
-    data_frame = @Frame("Data")
-    data_button_box = @ButtonBox(:h)
+    data_frame = @Frame("Actions")
+    button_box = @ButtonBox(:v)
     load_button = @Button("Load FASTA file")
-    len_button = @Button("Length")
+    go_button = @Button("Go!")
     push!(data_frame, data_button_box)
     push!(data_button_box, load_button)
     push!(data_button_box, len_button)
     g[1,1] = data_frame
 
     ## Calculation and model assumptions
-    assumptions_frame = @Frame("Assumptions")
-    assumptions_box = @Box(:v)
     μ_box = @Box(:h)
     μ_label = @Label("Mutation Rate:")
     μ_entry = @Entry()
@@ -32,13 +30,11 @@ function start_interactive_app()
     setproperty!(μ_entry, :text, μ)
     push!(μ_box, μ_label)
     push!(μ_box, μ_entry)
-    push!(assumptions_frame, assumptions_box)
-    push!(assumptions_box, model_frame)
     push!(model_frame, model_box)
     push!(model_box, JC69_radio)
     push!(model_box, K80_radio)
     push!(model_box, μ_box)
-    g[1,3] = assumptions_frame
+    g[2,1] = model_frame
 
 
     ## Sliding window settings
