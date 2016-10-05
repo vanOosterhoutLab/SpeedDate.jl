@@ -69,6 +69,8 @@ function start_interactive_app()
 
 
     push!(win, g)
+    setproperty!(g, :column_spacing, 15)
+    setproperty!(g, :row_spacing, 15)
     showall(win)
     c = Condition()
     signal_connect(win, :destroy) do widget
