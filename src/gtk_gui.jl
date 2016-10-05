@@ -1,8 +1,5 @@
 
 function start_interactive_app()
-    # Application Data
-    SEQUENCES = Vector{DNASequence}()
-    μ = "10e-9"
 
     # User interface
     win = @Window("Speed Date")
@@ -10,14 +7,8 @@ function start_interactive_app()
     g = @Grid()
 
     ## Action buttons
-    actions_frame = @Frame("Actions")
-    button_box = @ButtonBox(:h)
-    load_button = @Button("Load FASTA file")
     go_button = @Button("Go!")
-    push!(actions_frame, button_box)
-    push!(button_box, load_button)
-    push!(button_box, go_button)
-    g[1, 1] = actions_frame
+    g[1, 1] = go_button
 
     ## Calculation and model assumptions
     μ_box = @Box(:h)
@@ -27,7 +18,7 @@ function start_interactive_app()
     model_box = @Box(:v)
     JC69_radio = @RadioButton("Jukes Cantor 69")
     K80_radio = @RadioButton(JC69_radio, "Kimura 80")
-    setproperty!(μ_entry, :text, μ)
+    setproperty!(μ_entry, :text, "10e-9")
     push!(μ_box, μ_label)
     push!(μ_box, μ_entry)
     push!(model_frame, model_box)
@@ -59,28 +50,23 @@ function start_interactive_app()
 
     ## Signals and behaviour
 
-    fl = signal_connect(load_button, "clicked") do widget
-        file = open_dialog("Choose a FASTA file", win, ("*.fas","*.fasta"))
-        iostream = open(FASTAReader, file)
+    gosig = signal_connect(go_button, "clicked") do widget
         try
-            SEQUENCES = collect(iostream)
-            info_dialog("Completed reading FASTA file!", win)
-        catch
-            error_dialog("Something went wrong reading in your file!", win)
-        finally
-            close(iostream)
+            args = Dict{String, Any}()
+            args["file"] = open_dialog("Choose a FASTA file", win, ("*.fas","*.fasta"))
+            args["model"] = getproperty(JC69_radio, :active, Bool) ? "jc69" : "k80"
+            args["method"] = "default"
+            args["scan"] = getproperty(slide_check, :active, Bool)
+            args["width"] = parse(Int64, getproperty(, :text, String))
+            args["step"] = parse(Int64, getproperty(, :text, String))
+            args["mutation_rate"] = parse(Float64, getproperty(μ_entry, :text, String))
+            args["outfile"] = save_dialog("Enter a basename for results files", win)
+            args["onlydist"] = false
+            compute(args)
+        catch e
+            error_dialog("SpeedDate could not complete analysis.\nReason:\n$(e.msg)\n", win)
         end
     end
-
-    gomain = signal_connect(go_button, "clicked") do widget
-        if ask_dialog("Are you sure you want to run with these settings?")
-            saveto = save_dialog("Choose a location in which to save results", win)
-            println(length(SEQUENCES))
-            println(getproperty(μ_entry, :text, String))
-        end
-    end
-
-
 
     push!(win, g)
     setproperty!(g, :row_spacing, 15)
