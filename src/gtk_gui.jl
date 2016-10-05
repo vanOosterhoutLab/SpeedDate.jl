@@ -46,13 +46,15 @@ function start_interactive_app()
     step_entry = @Entry()
     wg = @Grid()
     setproperty!(g, :column_homogeneous, true)
-    wg[1:2,1] = slide_check
+    wg[1,1] = slide_check
     wg[1,2] = size_label
     wg[2,2] = step_label
     wg[1,3] = size_entry
     wg[2,3] = step_entry
     push!(window_frame, wg)
     g[3, 1] = window_frame
+    setproperty!(size_entry, :text, "1000")
+    setproperty!(step_entry, :text, "1")
 
 
     ## Signals and behaviour
