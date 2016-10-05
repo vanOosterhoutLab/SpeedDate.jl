@@ -16,7 +16,7 @@ function start_interactive_app()
     go_button = @Button("Go!")
     push!(actions_frame, button_box)
     push!(button_box, load_button)
-    push!(button_box, len_button)
+    push!(button_box, go_button)
     g[1,1] = actions_frame
 
     ## Calculation and model assumptions
