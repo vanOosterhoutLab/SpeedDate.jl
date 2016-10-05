@@ -25,12 +25,26 @@ function start_interactive_app()
     μ_box = @Box(:h)
     μ_label = @Label("Mutation Rate:")
     μ_entry = @Entry()
+    model_frame = @Frame("Mutation Model")
+    model_box = @Box(:v)
+    JC69_radio = @RadioButton("Jukes Cantor 69")
+    K80_radio = @RadioButton(JC69_radio, "Kimura 80")
     setproperty!(μ_entry, :text, μ)
     push!(μ_box, μ_label)
     push!(μ_box, μ_entry)
     push!(assumptions_box, μ_box)
     push!(assumptions_frame, assumptions_box)
+    push!(assumptions_box, model_frame)
+    push!(model_frame, model_box)
+    push!(model_box, JC69_radio)
+    push!(model_box, K80_radio)
     g[1,2] = assumptions_frame
+
+
+    ## Sliding window settings
+    window_frame = @Frame("Sliding Window")
+    window_box = @Box(:v)
+    slide_check = @CheckButton("Use Sliding Windows")
 
     ## Signals and behaviour
 
