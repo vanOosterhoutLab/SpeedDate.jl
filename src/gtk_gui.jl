@@ -51,7 +51,7 @@ function start_interactive_app()
     wg[2,2] = step_label
     wg[3,1] = size_entry
     wg[3,2] = step_entry
-    push!(window_frame, window_box)
+    push!(window_frame, wg)
     g[3, 1] = window_frame
 
 
