@@ -72,7 +72,8 @@ function start_interactive_app()
         end
     end
 
-    flen = signal_connect(go_button, "clicked") do widget
+    gomain = signal_connect(go_button, "clicked") do widget
+        saveto = save_dialog("Choose a location in which to save results")
         println(length(SEQUENCES))
         println(getproperty(μ_entry, :text, String))
     end
