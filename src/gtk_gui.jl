@@ -9,15 +9,15 @@ function start_interactive_app()
 
     g = @Grid()
 
-    ## Load and Saving data buttons
-    data_frame = @Frame("Actions")
+    ## Action buttons
+    actions_frame = @Frame("Actions")
     button_box = @ButtonBox(:v)
     load_button = @Button("Load FASTA file")
     go_button = @Button("Go!")
-    push!(data_frame, data_button_box)
-    push!(data_button_box, load_button)
-    push!(data_button_box, len_button)
-    g[1,1] = data_frame
+    push!(actions_frame, button_box)
+    push!(button_box, load_button)
+    push!(button_box, len_button)
+    g[1,1] = actions_frame
 
     ## Calculation and model assumptions
     μ_box = @Box(:h)
