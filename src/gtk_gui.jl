@@ -11,7 +11,7 @@ function start_interactive_app()
 
     ## Action buttons
     actions_frame = @Frame("Actions")
-    button_box = @ButtonBox(:v)
+    button_box = @ButtonBox(:h)
     load_button = @Button("Load FASTA file")
     go_button = @Button("Go!")
     push!(actions_frame, button_box)
@@ -34,7 +34,7 @@ function start_interactive_app()
     push!(model_box, JC69_radio)
     push!(model_box, K80_radio)
     push!(model_box, μ_box)
-    g[2, 1] = model_frame
+    g[1, 2] = model_frame
 
 
     ## Sliding window settings
@@ -52,7 +52,7 @@ function start_interactive_app()
     wg[1,3] = step_label
     wg[2,3] = step_entry
     push!(window_frame, wg)
-    g[3, 1] = window_frame
+    g[1, 3] = window_frame
     setproperty!(size_entry, :text, "1000")
     setproperty!(step_entry, :text, "1")
 
