@@ -1,6 +1,6 @@
 # SpeedDate.jl
 
-A simple tool for the estimation of coalescence times between sequences.
+A deliberately simple tool for the estimation of divergence times between sequences.
 Created with julia and [Bio.jl](https://github.com/BioJulia/Bio.jl)
 
 ## Quick Start
