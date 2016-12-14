@@ -1,0 +1,46 @@
+# Project information
+site_name: SpeedDate.jl
+site_description: A deliberately quick and simple divergence time estimation tool.
+site_author: Ward9250
+site_url: https://ward9250.github.io/SpeedDate.jl/
+
+# Repository
+repo_url:  https://github.com/Ward9250/SpeedDate.jl
+
+# Copyright
+copyright: Copyright (c) 2016 Ben J. Ward
+
+# Documentation and theme
+theme: biojulia
+docs_dir: 'build'
+
+# Options
+extra:
+  author:
+    github: Ward9250
+
+extra_css:
+  - assets/Documenter.css
+
+extra_javascript:
+  - https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML
+  - assets/mathjaxhelper.js
+
+# Extensions
+markdown_extensions:
+  - extra
+  - tables
+  - fenced_code
+  - codehilite
+  - def_list
+
+# Page tree
+pages:
+- Home: index.md
+- Manual:
+  - Introduction: man/intro.md
+  - Installation: man/install.md
+  - Running SpeedDate:
+      - Command Line: man/cmdline.md
+      - GTK Gui: man/gtkgui.md
+      - From julia: man/injulia.md 
