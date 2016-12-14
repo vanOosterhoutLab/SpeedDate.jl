@@ -22,26 +22,40 @@
       <h1>
 <a id="speeddatejl" class="anchor" href="#speeddatejl" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>SpeedDate.jl</h1>
 
-<p>A deliberately simple tool for the estimation of divergence times between sequences.
+<p>A simple tool for the estimation of coalescence times between sequences.
 Created with julia and <a href="https://github.com/BioJulia/Bio.jl">Bio.jl</a></p>
 
 <h2>
-<a id="quick-start" class="anchor" href="#quick-start" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Quick Start</h2>
+<a id="quick-start--installation" class="anchor" href="#quick-start--installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Quick Start &amp; Installation</h2>
+
+<h3>
+<a id="a-really-quick-start---binder-notebook" class="anchor" href="#a-really-quick-start---binder-notebook" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>A really quick start - Binder notebook</h3>
+
+<p>If you don't have or want to install julia or the package but still want to use
+the funtionality of SpeedDate, then a Binder IPython/IJulia notebook cloud
+session can be launched by clicking this: <a href="http://mybinder.org:/repo/ward9250/sd_binder"><img src="http://mybinder.org/badge.svg" alt="Binder"></a></p>
 
 <h3>
 <a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h3>
+
+<p>First you should have <a href="https://github.com/JuliaLang/julia">julia installed</a>.</p>
+
+<p>Open a julia terminal and enter:</p>
 
 <p>Enter in a Julia terminal:</p>
 
 <div class="highlight highlight-source-julia"><pre>Pkg<span class="pl-k">.</span><span class="pl-c1">clone</span>(<span class="pl-s"><span class="pl-pds">"</span>https://github.com/Ward9250/SpeedDate.jl.git<span class="pl-pds">"</span></span>)</pre></div>
 
-<p>To download and install the master branch. Note the master branch is ahead
-of any release and so may contain bugs of incomplete features.</p>
+<p>To download and install the master branch.</p>
 
 <h3>
 <a id="useage" class="anchor" href="#useage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Useage</h3>
 
-<p>To use the SpeedDate program on the command line, invoke julia like so:</p>
+<h4>
+<a id="on-the-command-line" class="anchor" href="#on-the-command-line" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>On the command line:</h4>
+
+<p>SpeedDate can be started from the command line by invoking the following line in
+a terminal:</p>
 
 <div class="highlight highlight-source-shell"><pre>julia -e<span class="pl-s"><span class="pl-pds">"</span>using SpeedDate; SpeedDate.main()<span class="pl-pds">"</span></span></pre></div>
 
@@ -49,41 +63,91 @@ of any release and so may contain bugs of incomplete features.</p>
 for an input aligned FASTA file. Use the -h flag to display the possible options
 for the <code>compute</code> command:</p>
 
-<div class="highlight highlight-source-shell"><pre>julia -e<span class="pl-s"><span class="pl-pds">"</span>using SpeedDate; SpeedDate.main()<span class="pl-pds">"</span></span> compute -h
+<pre><code>julia -e"using SpeedDate; SpeedDate.main()" compute -h
 
-usage: <span class="pl-k">&lt;</span>PROGRAM<span class="pl-k">&gt;</span> compute [-f FILE] [-s [DNASEQS...]] [-m MODEL]
+usage: &lt;PROGRAM&gt; compute [-f FILE] [-s [DNASEQS...]] [-m MODEL]
                         [-r MUTATION_RATE] [--method METHOD]
                         [-o OUTFILE] [--scan] [-w WIDTH] [-j STEP]
                         [--onlydist] [-h]
 
 optional arguments:
-  <span class="pl-k">-f</span>, --file FILE       An input file.
-  <span class="pl-k">-s</span>, --dnaseqs [DNASEQS...]
-                        The first of two DNA sequences to <span class="pl-c1">test</span> (<span class="pl-c1">type</span>:
+  -f, --file FILE       An input file.
+  -s, --dnaseqs [DNASEQS...]
+                        The first of two DNA sequences to test (type:
                         Bio.Seq.BioSequence{Bio.Seq.DNAAlphabet{4}})
   -m, --model MODEL     The model used to compute genetic distances.
                         Currently jc69, and k80 are supported.
-                        (default: <span class="pl-s"><span class="pl-pds">"</span>jc69<span class="pl-pds">"</span></span>)
-  <span class="pl-k">-r</span>, --mutation_rate MUTATION_RATE
-                        The mutation rate to be assumed. (<span class="pl-c1">type</span>:
+                        (default: "jc69")
+  -r, --mutation_rate MUTATION_RATE
+                        The mutation rate to be assumed. (type:
                         Float64, default: 1.0e-8)
-  --method METHOD       The dating method to use. Currently <span class="pl-s"><span class="pl-pds">'</span>default<span class="pl-pds">'</span></span>
-                        and <span class="pl-s"><span class="pl-pds">'</span>simple<span class="pl-pds">'</span></span> are supported.  (default:
-                        <span class="pl-s"><span class="pl-pds">"</span>default<span class="pl-pds">"</span></span>)
-  <span class="pl-k">-o</span>, --outfile OUTFILE
-                        Base name <span class="pl-k">for</span> the output files(s). (default:
-                        <span class="pl-s"><span class="pl-pds">"</span>SpeedDate<span class="pl-pds">"</span></span>)
+  --method METHOD       The dating method to use. Currently 'default'
+                        and 'simple' are supported.  (default:
+                        "default")
+  -o, --outfile OUTFILE
+                        Base name for the output files(s). (default:
+                        "SpeedDate")
   --scan                Whether or not to compute dates across
                         sequences with a sliding window.
-  <span class="pl-k">-w</span>, --width WIDTH     Width of the sliding window across sequences.
-                        (<span class="pl-c1">type</span>: Int64, default: 100)
+  -w, --width WIDTH     Width of the sliding window across sequences.
+                        (type: Int64, default: 100)
   -j, --step STEP       The number of base pairs the sliding window
-                        moves by each iteration. (<span class="pl-c1">type</span>: Int64,
+                        moves by each iteration. (type: Int64,
                         default: -1)
   --onlydist
-  <span class="pl-k">-h</span>, --help            show this <span class="pl-c1">help</span> message and <span class="pl-c1">exit</span></pre></div>
+  -h, --help            show this help message and exit
+</code></pre>
 
-<p><em>A note about unit tests, as SpeedDate essentially wraps Bio.jl functionality in a command line or GTK gui, no unit tests have been included yet, as the functions used have their own unit tests in the BioJulia project in which they are defined.</em> </p>
+<h5>
+<a id="using-a-gtk-based-gui" class="anchor" href="#using-a-gtk-based-gui" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Using a GTK based GUI</h5>
+
+<p>If you use the <code>interactive</code> command instead of the <code>compute</code> command, you will
+be presented with a GTK based graphical user interface.</p>
+
+<pre><code>julia -e"using SpeedDate; SpeedDate.main()" interactive
+</code></pre>
+
+<h4>
+<a id="from-inside-a-julia-session" class="anchor" href="#from-inside-a-julia-session" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>From inside a julia session.</h4>
+
+<p>You can execute the SpeedDate program from within a julia console session or
+script. To do this, create a dictionary of arguments and then give that to the
+<code>SpeedDate.compute</code> function.</p>
+
+<div class="highlight highlight-source-julia"><pre><span class="pl-k">using</span> SpeedDate
+
+options <span class="pl-k">=</span> <span class="pl-c1">Dict</span>(<span class="pl-s"><span class="pl-pds">"</span>model<span class="pl-pds">"</span></span> <span class="pl-k">=</span><span class="pl-k">&gt;</span> <span class="pl-s"><span class="pl-pds">"</span>jc69<span class="pl-pds">"</span></span>,
+               <span class="pl-s"><span class="pl-pds">"</span>mutation_rate<span class="pl-pds">"</span></span> <span class="pl-k">=</span><span class="pl-k">&gt;</span> <span class="pl-c1">10e-9</span>,
+               <span class="pl-s"><span class="pl-pds">"</span>method<span class="pl-pds">"</span></span> <span class="pl-k">=</span><span class="pl-k">&gt;</span> <span class="pl-s"><span class="pl-pds">"</span>default<span class="pl-pds">"</span></span>,
+               <span class="pl-s"><span class="pl-pds">"</span>scan<span class="pl-pds">"</span></span> <span class="pl-k">=</span><span class="pl-k">&gt;</span> <span class="pl-c1">false</span>,
+               <span class="pl-s"><span class="pl-pds">"</span>onlydist<span class="pl-pds">"</span></span> <span class="pl-k">=</span><span class="pl-k">&gt;</span> <span class="pl-c1">false</span>,
+               <span class="pl-s"><span class="pl-pds">"</span>file<span class="pl-pds">"</span></span> <span class="pl-k">=</span><span class="pl-k">&gt;</span> <span class="pl-s"><span class="pl-pds">"</span>contig1_ac.fas<span class="pl-pds">"</span></span>,
+               <span class="pl-s"><span class="pl-pds">"</span>outfile<span class="pl-pds">"</span></span> <span class="pl-k">=</span><span class="pl-k">&gt;</span> <span class="pl-s"><span class="pl-pds">"</span>test<span class="pl-pds">"</span></span>)
+
+SpeedDate<span class="pl-k">.</span><span class="pl-c1">compute</span>(options)</pre></div>
+
+<p>The dictionary should have the following fields:</p>
+
+<ul>
+<li>"model" =&gt; Either "jc69" or "k80".</li>
+<li>"mutation_rate" =&gt; A number representing the mutation rate, e.g. 10e-9.</li>
+<li>"file" =&gt; A string that is the filename e.g. "~/Desktop/myseqs.fasta".</li>
+<li>"outfile" =&gt; A string that is the basename of all output files.</li>
+<li>"method" =&gt; Either "default" or "simple", I recommend leaving as "default".</li>
+<li>"onlydist" =&gt; Set to true of false depending on whether or not you only want the distances to be computed.</li>
+<li>"scan" =&gt; false.</li>
+</ul>
+
+<p>If you want to do the sliding window scan, the following should also be added to
+the dictionary:</p>
+
+<ul>
+<li>"scan" =&gt; true</li>
+<li>"size" =&gt; A number representing the sliding window size.</li>
+<li>"step" =&gt; A number representing the sliding window step.</li>
+</ul>
+
+<p><em>A note about unit tests, as SpeedDate essentially wraps Bio.jl functionality in a command line or GTK gui, no unit tests have been included yet, as the functions used have their own unit tests in the BioJulia project in which they are defined.</em></p>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/Ward9250/SpeedDate.jl">SpeedDate.jl</a> is maintained by <a href="https://github.com/Ward9250">Ward9250</a>.</span>
