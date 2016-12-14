@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>SpeedDate.jl by Ward9250</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">SpeedDate.jl</h1>
+      <h2 class="project-tagline">A deliberately simply tool for the estimation of divergence times between DNA sequences.</h2>
+      <a href="https://github.com/Ward9250/SpeedDate.jl" class="btn">View on GitHub</a>
+      <a href="https://github.com/Ward9250/SpeedDate.jl/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/Ward9250/SpeedDate.jl/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="speeddatejl" class="anchor" href="#speeddatejl" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>SpeedDate.jl</h1>
+
+<p>A deliberately simple tool for the estimation of divergence times between sequences.
+Created with julia and <a href="https://github.com/BioJulia/Bio.jl">Bio.jl</a></p>
+
+<h2>
+<a id="quick-start" class="anchor" href="#quick-start" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Quick Start</h2>
+
+<h3>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h3>
+
+<p>Enter in a Julia terminal:</p>
+
+<div class="highlight highlight-source-julia"><pre>Pkg<span class="pl-k">.</span><span class="pl-c1">clone</span>(<span class="pl-s"><span class="pl-pds">"</span>https://github.com/Ward9250/SpeedDate.jl.git<span class="pl-pds">"</span></span>)</pre></div>
+
+<p>To download and install the master branch. Note the master branch is ahead
+of any release and so may contain bugs of incomplete features.</p>
+
+<h3>
+<a id="useage" class="anchor" href="#useage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Useage</h3>
+
+<p>To use the SpeedDate program on the command line, invoke julia like so:</p>
+
+<div class="highlight highlight-source-shell"><pre>julia -e<span class="pl-s"><span class="pl-pds">"</span>using SpeedDate; SpeedDate.main()<span class="pl-pds">"</span></span></pre></div>
+
+<p>The <code>compute</code> command is invoked to compute genetic distances and coalescence times
+for an input aligned FASTA file. Use the -h flag to display the possible options
+for the <code>compute</code> command:</p>
+
+<div class="highlight highlight-source-shell"><pre>julia -e<span class="pl-s"><span class="pl-pds">"</span>using SpeedDate; SpeedDate.main()<span class="pl-pds">"</span></span> compute -h
+
+usage: <span class="pl-k">&lt;</span>PROGRAM<span class="pl-k">&gt;</span> compute [-f FILE] [-s [DNASEQS...]] [-m MODEL]
+                        [-r MUTATION_RATE] [--method METHOD]
+                        [-o OUTFILE] [--scan] [-w WIDTH] [-j STEP]
+                        [--onlydist] [-h]
+
+optional arguments:
+  <span class="pl-k">-f</span>, --file FILE       An input file.
+  <span class="pl-k">-s</span>, --dnaseqs [DNASEQS...]
+                        The first of two DNA sequences to <span class="pl-c1">test</span> (<span class="pl-c1">type</span>:
+                        Bio.Seq.BioSequence{Bio.Seq.DNAAlphabet{4}})
+  -m, --model MODEL     The model used to compute genetic distances.
+                        Currently jc69, and k80 are supported.
+                        (default: <span class="pl-s"><span class="pl-pds">"</span>jc69<span class="pl-pds">"</span></span>)
+  <span class="pl-k">-r</span>, --mutation_rate MUTATION_RATE
+                        The mutation rate to be assumed. (<span class="pl-c1">type</span>:
+                        Float64, default: 1.0e-8)
+  --method METHOD       The dating method to use. Currently <span class="pl-s"><span class="pl-pds">'</span>default<span class="pl-pds">'</span></span>
+                        and <span class="pl-s"><span class="pl-pds">'</span>simple<span class="pl-pds">'</span></span> are supported.  (default:
+                        <span class="pl-s"><span class="pl-pds">"</span>default<span class="pl-pds">"</span></span>)
+  <span class="pl-k">-o</span>, --outfile OUTFILE
+                        Base name <span class="pl-k">for</span> the output files(s). (default:
+                        <span class="pl-s"><span class="pl-pds">"</span>SpeedDate<span class="pl-pds">"</span></span>)
+  --scan                Whether or not to compute dates across
+                        sequences with a sliding window.
+  <span class="pl-k">-w</span>, --width WIDTH     Width of the sliding window across sequences.
+                        (<span class="pl-c1">type</span>: Int64, default: 100)
+  -j, --step STEP       The number of base pairs the sliding window
+                        moves by each iteration. (<span class="pl-c1">type</span>: Int64,
+                        default: -1)
+  --onlydist
+  <span class="pl-k">-h</span>, --help            show this <span class="pl-c1">help</span> message and <span class="pl-c1">exit</span></pre></div>
+
+<p><em>A note about unit tests, as SpeedDate essentially wraps Bio.jl functionality in a command line or GTK gui, no unit tests have been included yet, as the functions used have their own unit tests in the BioJulia project in which they are defined.</em> </p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/Ward9250/SpeedDate.jl">SpeedDate.jl</a> is maintained by <a href="https://github.com/Ward9250">Ward9250</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
