@@ -41,3 +41,6 @@ pages:
   - Introduction: man/intro.md
   - Installation: man/install.md
   - Running SpeedDate:
+      - Command Line: man/cmdline.md
+      - GTK Gui: man/gtkgui.md
+      - From julia: man/injulia.md
