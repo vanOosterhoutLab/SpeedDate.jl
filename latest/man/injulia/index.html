@@ -171,7 +171,38 @@
 
 <p><a id='Using-SpeedDate-from-a-julia-script-or-session-1'></a></p>
 <h1 id="using-speeddate-from-a-julia-script-or-session">Using SpeedDate from a julia script or session</h1>
-<p>TODO</p></div>
+<p>You can execute the SpeedDate program from within a julia console session or script.</p>
+<p>To do this, create a dictionary of arguments and then give that to the <code>SpeedDate.compute</code> function.</p>
+<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">SpeedDate</span>
+
+<span class="n">options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="s">&quot;model&quot;</span> <span class="o">=&gt;</span> <span class="s">&quot;jc69&quot;</span><span class="p">,</span>
+               <span class="s">&quot;mutation_rate&quot;</span> <span class="o">=&gt;</span> <span class="mf">10e-9</span><span class="p">,</span>
+               <span class="s">&quot;method&quot;</span> <span class="o">=&gt;</span> <span class="s">&quot;default&quot;</span><span class="p">,</span>
+               <span class="s">&quot;scan&quot;</span> <span class="o">=&gt;</span> <span class="n">false</span><span class="p">,</span>
+               <span class="s">&quot;onlydist&quot;</span> <span class="o">=&gt;</span> <span class="n">false</span><span class="p">,</span>
+               <span class="s">&quot;file&quot;</span> <span class="o">=&gt;</span> <span class="s">&quot;contig1_ac.fas&quot;</span><span class="p">,</span>
+               <span class="s">&quot;outfile&quot;</span> <span class="o">=&gt;</span> <span class="s">&quot;test&quot;</span><span class="p">)</span>
+
+<span class="n">SpeedDate</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+</pre></div>
+
+
+<p>The dictionary should have the following fields:</p>
+<ul>
+<li>"model" =&gt; Either "jc69" or "k80".</li>
+<li>"mutation_rate" =&gt; A number representing the mutation rate, e.g. 10e-9.</li>
+<li>"file" =&gt; A string that is the filename e.g. "~/Desktop/myseqs.fasta".</li>
+<li>"outfile" =&gt; A string that is the basename of all output files.</li>
+<li>"method" =&gt; Either "default" or "simple", I recommend leaving as "default".</li>
+<li>"onlydist" =&gt; Set to true of false depending on whether or not you only want the distances to be computed.</li>
+<li>"scan" =&gt; false.</li>
+</ul>
+<p>If you want to do the sliding window scan, the following should also be added to the dictionary:</p>
+<ul>
+<li>"scan" =&gt; true</li>
+<li>"size" =&gt; A number representing the sliding window size.</li>
+<li>"step" =&gt; A number representing the sliding window step.</li>
+</ul></div>
         
     </div>
 

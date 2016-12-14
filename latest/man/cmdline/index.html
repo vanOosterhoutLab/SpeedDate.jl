@@ -171,7 +171,47 @@
 
 <p><a id='Running-SpeedDate-as-a-command-line-application-1'></a></p>
 <h1 id="running-speeddate-as-a-command-line-application">Running SpeedDate as a command line application</h1>
-<p>TODO</p></div>
+<p>SpeedDate can be started from the command line by invoking the following line in a terminal.</p>
+<div class="codehilite"><pre><span></span>julia -e&quot;using SpeedDate; SpeedDate.main()&quot;
+</pre></div>
+
+
+<p>The <code>compute</code> command is invoked to compute genetic distances and divergence times for an input aligned FASTA file.</p>
+<p>Use the -h flag to display the possible options for the <code>compute</code> command:</p>
+<div class="codehilite"><pre><span></span>julia -e&quot;using SpeedDate; SpeedDate.main()&quot; compute -h
+
+usage: &lt;PROGRAM&gt; compute [-f FILE] [-s [DNASEQS...]] [-m MODEL]
+                        [-r MUTATION_RATE] [--method METHOD]
+                        [-o OUTFILE] [--scan] [-w WIDTH] [-j STEP]
+                        [--onlydist] [-h]
+
+optional arguments:
+  -f, --file FILE       An input file.
+  -s, --dnaseqs [DNASEQS...]
+                        The first of two DNA sequences to test (type:
+                        Bio.Seq.BioSequence{Bio.Seq.DNAAlphabet{4}})
+  -m, --model MODEL     The model used to compute genetic distances.
+                        Currently jc69, and k80 are supported.
+                        (default: &quot;jc69&quot;)
+  -r, --mutation_rate MUTATION_RATE
+                        The mutation rate to be assumed. (type:
+                        Float64, default: 1.0e-8)
+  --method METHOD       The dating method to use. Currently &#39;default&#39;
+                        and &#39;simple&#39; are supported.  (default:
+                        &quot;default&quot;)
+  -o, --outfile OUTFILE
+                        Base name for the output files(s). (default:
+                        &quot;SpeedDate&quot;)
+  --scan                Whether or not to compute dates across
+                        sequences with a sliding window.
+  -w, --width WIDTH     Width of the sliding window across sequences.
+                        (type: Int64, default: 100)
+  -j, --step STEP       The number of base pairs the sliding window
+                        moves by each iteration. (type: Int64,
+                        default: -1)
+  --onlydist
+  -h, --help            show this help message and exit
+</pre></div></div>
         
     </div>
 
