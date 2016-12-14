@@ -2,12 +2,12 @@
     "docs": [
         {
             "location": "/", 
-            "text": "SpeedDate Documentation\n\n\n`$@contents Pages = [     \"man/intro.md\",     \"man/install.md\" ]$", 
+            "text": "SpeedDate Documentation\n\n\n\n\nIntroduction\n\n\nThe dating estimation method\n\n\n\n\n\n\nInstallation\n\n\nInstalling SpeedDate to your machine\n\n\n\n\n\n\nRunning SpeedDate as a command line application\n\n\nRunning SpeedDate with a GTK based Graphical User Interface\n\n\nUsing SpeedDate from a julia script or session", 
             "title": "Home"
         }, 
         {
             "location": "/#speeddate-documentation", 
-            "text": "`$@contents Pages = [     \"man/intro.md\",     \"man/install.md\" ]$", 
+            "text": "Introduction  The dating estimation method    Installation  Installing SpeedDate to your machine    Running SpeedDate as a command line application  Running SpeedDate with a GTK based Graphical User Interface  Using SpeedDate from a julia script or session", 
             "title": "SpeedDate Documentation"
         }, 
         {
