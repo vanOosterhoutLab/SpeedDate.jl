@@ -1,4 +1,6 @@
 
+using Gtk.ShortNames
+
 function start_interactive_app()
 
     # User interface

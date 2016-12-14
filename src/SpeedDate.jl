@@ -2,11 +2,9 @@ module SpeedDate
 
 using ArgParse
 using Bio: Seq, Var, Phylo.Dating, Indexers
-using Gtk.ShortNames
 
 include("compute.jl")
 include("visualize.jl")
-include("gtk_gui.jl")
 
 function parse_command_line()
     s = ArgParseSettings()
@@ -78,6 +76,7 @@ function main()
             compute(arguments["compute"])
         end
         if arguments["%COMMAND%"] == "interactive"
+            include("gtk_gui.jl")
             start_interactive_app()
         end
     #catch err
