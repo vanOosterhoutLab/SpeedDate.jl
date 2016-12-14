@@ -7,9 +7,15 @@ julia:
   - nightly
 matrix:
   allow_failures:
-    - julia: nightly  
+    - julia: nightly
 notifications:
   email: false
+addons:
+    apt:
+        packages:
+            - xvfb
+            - xauth
+            - libgtk-3-0
 before_script:
   - export PATH=$HOME/.local/bin:$PATH
 script:
