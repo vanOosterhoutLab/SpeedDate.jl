@@ -3,7 +3,7 @@ module SpeedDate
 using ArgParse
 using Bio: Seq, Var, Phylo.Dating, Indexers
 
-include("compute.jl")
+include("dating.jl")
 include("visualize.jl")
 
 function parse_command_line()

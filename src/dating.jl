@@ -1,4 +1,15 @@
 
+DE = DatingEstimate
+
+function dists_to_dates{A<:AbstractArray,R<:DE}(dists::A{Float64}, len::Int, mu::Float64, ::Type{R})
+    Ts = similar(dists, R)
+    @inbounds for i in eachindex(dists)
+        nmut = convert(Int, ceil(dists[i] * len))
+        Ts[i] = coaltime(len, nmut, mu, SpeedDating)
+    end
+    return Ts
+end
+
 function gather_sequences(args)
     names = Vector{String}()
     seqs =  Vector{DNASequence}()
@@ -119,41 +130,6 @@ function write_results(filename::String, names1::Vector{Symbol},
     close(maxfile)
 end
 
-
-function dates_from_dists(dists::Vector{Float64}, len::Int, mu::Float64, ::Type{SimpleEstimate})
-    Ts = zeros(Float64, length(dists))
-    @inbounds for i in 1:length(dists)
-        Ts[i] = dists[i] / (2 * mu)
-    end
-    return Ts
-end
-
-function dates_from_dists(dists::Matrix{Float64}, len::Int, mu::Float64, ::Type{SimpleEstimate})
-    Ts = zeros(Float64, size(dists))
-    @inbounds for i in 1:length(dists)
-        Ts[i] = dists[i] / (2 * mu)
-    end
-    return Ts
-end
-
-function dates_from_dists(dists::Vector{Float64}, len::Int, mu::Float64, ::Type{SpeedDating})
-    Ts = Vector{SDResult}(length(dists))
-    @inbounds for i in 1:length(dists)
-        nmut = convert(Int, ceil(dists[i] * len))
-        Ts[i] = coaltime(len, nmut, mu, SpeedDating)
-    end
-    return Ts
-end
-
-function dates_from_dists(dists::Matrix{Float64}, len::Int, mu::Float64, ::Type{SpeedDating})
-    Ts = Matrix{SDResult}(size(dists))
-    @inbounds for i in 1:length(dists)
-        nmut = convert(Int, ceil(dists[i] * len))
-        Ts[i] = coaltime(len, nmut, mu, SpeedDating)
-    end
-    return Ts
-end
-
 function compute(args)
 
     println("Loading sequences.")
@@ -194,7 +170,7 @@ function compute(args)
     write_results("$(args["outfile"])_distances.txt", names1, names2, dists)
 
     if !args["onlydist"]
-        times = dates_from_dists(dists, slen, args["mutation_rate"], dmethod)
+        times = dists_to_dates(dists, slen, args["mutation_rate"], dmethod)
         write_results("$(args["outfile"])_ctimes.txt", names1, names2, times)
     end
 end
