@@ -27,17 +27,17 @@
         }, 
         {
             "location": "/man/install/", 
-            "text": "Installation\n\n\nSpeedDate can be used in three forms: If you are comfortable downloading your own julia packages, there is a command line interface and a GTK based GUI bundled in \nSpeedDate.jl\n, but actually since this notebook is hosted using the \nBinder\n system, you can use a notebook to use the SpeedDate method right away, no need to install anything new on your computer.\n\n\n\n\nInstalling SpeedDate to your machine\n\n\nFirst you should have \njulia installed\n.\n\n\nOpen a julia terminal and enter:\n\n\nEnter in a Julia terminal:\n\n\nPkg\n.\nclone\n(\nhttps://github.com/Ward9250/SpeedDate.jl.git\n)\n\n\n\n\n\n\nTo download and install the master branch.\n\n\njulia might ask you to do the \nPkg.update()\n command before or after installing packages, and this is perfectly normal and fine to do.", 
+            "text": "Installation\n\n\nSpeedDate can be used in three forms: If you are comfortable downloading your own julia packages, there is a command line interface and a GTK based GUI bundled in \nSpeedDate.jl\n. There is also a notebook hosted using the \nBinder\n system planned, where you can use a notebook to use the SpeedDate method right away, no need to install anything new on your computer.\n\n\n\n\nInstalling SpeedDate to your machine\n\n\nFirst you should have \njulia installed\n.\n\n\nOpen a julia terminal and enter:\n\n\nEnter in a Julia terminal:\n\n\nPkg\n.\nadd\n(\nhttps://github.com/Ward9250/SpeedDate.jl.git\n)\n\n\n\n\n\n\nTo download and install the master branch.\n\n\njulia might ask you to do the \nPkg.update()\n command before or after installing packages, and this is perfectly normal and fine to do.", 
             "title": "Installation"
         }, 
         {
             "location": "/man/install/#installation", 
-            "text": "SpeedDate can be used in three forms: If you are comfortable downloading your own julia packages, there is a command line interface and a GTK based GUI bundled in  SpeedDate.jl , but actually since this notebook is hosted using the  Binder  system, you can use a notebook to use the SpeedDate method right away, no need to install anything new on your computer.", 
+            "text": "SpeedDate can be used in three forms: If you are comfortable downloading your own julia packages, there is a command line interface and a GTK based GUI bundled in  SpeedDate.jl . There is also a notebook hosted using the  Binder  system planned, where you can use a notebook to use the SpeedDate method right away, no need to install anything new on your computer.", 
             "title": "Installation"
         }, 
         {
             "location": "/man/install/#installing-speeddate-to-your-machine", 
-            "text": "First you should have  julia installed .  Open a julia terminal and enter:  Enter in a Julia terminal:  Pkg . clone ( https://github.com/Ward9250/SpeedDate.jl.git )   To download and install the master branch.  julia might ask you to do the  Pkg.update()  command before or after installing packages, and this is perfectly normal and fine to do.", 
+            "text": "First you should have  julia installed .  Open a julia terminal and enter:  Enter in a Julia terminal:  Pkg . add ( https://github.com/Ward9250/SpeedDate.jl.git )   To download and install the master branch.  julia might ask you to do the  Pkg.update()  command before or after installing packages, and this is perfectly normal and fine to do.", 
             "title": "Installing SpeedDate to your machine"
         }, 
         {
