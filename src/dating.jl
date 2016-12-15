@@ -1,7 +1,6 @@
 
-DE = DatingEstimate
 
-function dists_to_dates{A<:AbstractArray,R<:DE}(dists::A{Float64}, len::Int, mu::Float64, ::Type{R})
+function dists_to_dates{R<:DatingEstimate}(dists::AbstractArray{Float64}, len::Int, mu::Float64, ::Type{R})
     Ts = similar(dists, R)
     @inbounds for i in eachindex(dists)
         nmut = convert(Int, ceil(dists[i] * len))
@@ -151,9 +150,9 @@ function compute(args)
     end
     met = lowercase(args["method"])
     if met == "default"
-        dmethod = SpeedDating
+        dmethod = SDResult
     elseif met == "simple"
-        dmethod = SimpleEstimate
+        dmethod = Float64
     else
         error("Invalid choice of coalescence time estimate method.")
     end
