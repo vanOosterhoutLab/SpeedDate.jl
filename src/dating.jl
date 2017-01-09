@@ -99,9 +99,13 @@ end
 function write_results(filename::String, names1::Vector{Symbol},
     names2::Vector{Symbol}, values::Matrix{SDResult})
 
-    minfile = open("min_$filename", "w")
-    midfile = open("mid_$filename", "w")
-    maxfile = open("max_$filename", "w")
+    bsnm = basename(filename)
+    pth = dirname(filename)
+
+    minfile = open(joinpath(pth, "min_$bsnm"), "w")
+    midfile = open(joinpath(pth, "mid_$bsnm"), "w")
+    maxfile = open(joinpath(pth, "max_$bsnm"), "w")
+
     for i in 1:length(names1)
         print(minfile, names1[i])
         print(minfile, ", ")
