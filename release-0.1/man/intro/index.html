@@ -6,10 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <meta name="author" content="Ward9250"> 
-    <link rel="canonical" href="https://ward9250.github.io/SpeedDate.jl/man/install/"> 
+    <link rel="canonical" href="https://ward9250.github.io/SpeedDate.jl/man/intro/"> 
     <link rel="shortcut icon" href="../../img/favicon.ico">
 
-    <title>Installation - SpeedDate.jl</title>
+    <title>Introduction - SpeedDate.jl</title>
 
     <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
@@ -79,14 +79,14 @@
                         <ul class="dropdown-menu">
                         
                             
-<li >
-    <a href="../intro/">Introduction</a>
+<li class="active">
+    <a href="./">Introduction</a>
 </li>
 
                         
                             
-<li class="active">
-    <a href="./">Installation</a>
+<li >
+    <a href="../install/">Installation</a>
 </li>
 
                         
@@ -132,12 +132,12 @@
                 </li>
                 
                     <li >
-                        <a rel="next" href="../intro/">
+                        <a rel="next" href="../..">
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../cmdline/">
+                        <a rel="prev" href="../install/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -162,9 +162,9 @@
         <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="first-level active"><a href="#installation">Installation</a></li>
+        <li class="first-level active"><a href="#introduction">Introduction</a></li>
         
-            <li class="second-level"><a href="#installing-speeddate-to-your-machine">Installing SpeedDate to your machine</a></li>
+            <li class="second-level"><a href="#the-dating-estimation-method">The dating estimation method</a></li>
             
         
     
@@ -172,20 +172,27 @@
 </div></div>
         <div class="col-md-9" role="main">
 
-<p><a id='Installation-1'></a></p>
-<h1 id="installation">Installation</h1>
-<p>SpeedDate can be used in three forms: If you are comfortable downloading your own julia packages, there is a command line interface and a GTK based GUI bundled in <a href="https://github.com/Ward9250/SpeedDate.jl">SpeedDate.jl</a>. There is also a notebook hosted using the <a href="http://mybinder.org/">Binder</a> system planned, where you can use a notebook to use the SpeedDate method right away, no need to install anything new on your computer.</p>
-<p><a id='Installing-SpeedDate-to-your-machine-1'></a></p>
-<h2 id="installing-speeddate-to-your-machine">Installing SpeedDate to your machine</h2>
-<p>First you should have <a href="https://github.com/JuliaLang/julia">julia installed</a>.</p>
-<p>Open a julia terminal and enter:</p>
-<p>Enter in a Julia terminal:</p>
-<div class="codehilite"><pre><span></span><span class="n">Pkg</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;https://github.com/Ward9250/SpeedDate.jl.git&quot;</span><span class="p">)</span>
-</pre></div>
-
-
-<p>To download and install the master branch.</p>
-<p>julia might ask you to do the <code>Pkg.update()</code> command before or after installing packages, and this is perfectly normal and fine to do.</p></div>
+<p><a id='Introduction-1'></a></p>
+<h1 id="introduction">Introduction</h1>
+<p>SpeedDate is the name given to a method of estimating a divergence time between two DNA sequence regions that was first implemented in the R package <a href="https://github.com/Ward9250/HybridCheck">HybridCheck</a> in order to date regions of introgression in large sequence contigs.</p>
+<p>The current SpeedDate is implemented in the <a href="https://github.com/Ward9250/SpeedDate.jl">SpeedDate.jl</a> package, which depends on <a href="https://github.com/BioJulia/Bio.jl">Bio.jl</a> for core functionality like the input and output of DNA sequences and data, and computation of mutation counts and genetic distances.</p>
+<p><a id='The-dating-estimation-method-1'></a></p>
+<h2 id="the-dating-estimation-method">The dating estimation method</h2>
+<p>The divergence time is estimated using the number of mutations that have occurred between two aligned sequences.</p>
+<p>The calculation uses a strict molecular clock which assumes a constant substitution rate, both through time and across taxa.</p>
+<p>Modelling the mutation accumulation process as a Bernoulli trial, the probability of observing $k$ or fewer mutations between two sequences of length $n$ can be given as:</p>
+<p>$$
+Pr(X \le k) = \sum_{i=0}^{\lfloor k \rfloor} \binom{n}{i} p^i (1 - p)^{n-i}
+$$</p>
+<p>Where $p$ is the probability of observing a single mutation between the two aligned sequences.</p>
+<p>The value of $p$ depends on two key factors: the substitution rate and the divergence time.</p>
+<p>If you assume a molecular clock, whereby two DNA sequences are both accumulating mutations at a rate $\mu$ for $t$ generations, then you may define $p = 2\mu t$.</p>
+<p>Using these assumptions, the SpeedDate method finds the root of the following formula for $Pr(X \le k) = 0.05$, $0.5$, and $0.95$, and then divides the three answers by twice the assumed substitution rate.</p>
+<p>$$
+f(n, k, 2\mu t, Pr(X \le k) = \left( \sum_{i=0}^{\lfloor k \rfloor} \binom{n}{i} {2\mu t}^i (1 - 2\mu t)^{n-i}   \right) - Pr(X \le k)
+$$</p>
+<p>This results in an upper, middle, and lower estimate of the coalescence time $t$ of the two sequences (expressed as the number of generations).</p>
+<p>This method has been written into the Phylo module of the flagship package of the BioJulia project, Bio.jl as a function called <code>coaltime</code>, and SpeedDate simply bundles the steps of loading data, conting mutations in sequences, and passing that information to <code>coaltime</code>, and writing results to file, easier.</p></div>
         
     </div>
 
