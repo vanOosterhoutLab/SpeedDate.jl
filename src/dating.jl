@@ -1,14 +1,4 @@
 
-
-function dists_to_dates{R<:DatingEstimate}(dists::AbstractArray{Float64}, len::Int, mu::Float64, ::Type{R})
-    Ts = similar(dists, R)
-    @inbounds for i in eachindex(dists)
-        nmut = convert(Int, ceil(dists[i] * len))
-        Ts[i] = coaltime(len, nmut, mu, SpeedDating)
-    end
-    return Ts
-end
-
 function gather_sequences(args)
     names = Vector{String}()
     seqs =  Vector{DNASequence}()
@@ -45,92 +35,69 @@ function generate_names_lists(indexer::Indexer)
     return list1, list2
 end
 
-function write_results(filename::String, names1::Vector{Symbol},
-    names2::Vector{Symbol}, values::Vector{Float64})
+function maketable(names1::Vector{Symbol}, names2::Vector{Symbol}, windows::Vector{UnitRange{Int64}}, values::Matrix{Float64}, sepcol::Bool)
+    nwindows = length(windows)
+    firstseq = repeat(names1, inner = nwindows)
+    secondseq = repeat(names2, inner = nwindows)
+    value = reshape(values, *(size(values)...))
+    if sepcol
+        firsts = collect(first(x) for x in windows)
+        lasts = collect(last(x) for x in windows)
 
-    outfile = open(filename, "w")
-    for i in 1:length(names1)
-        print(outfile, names1[i])
-        print(outfile, ", ")
-        print(outfile, names2[i])
-        print(outfile, ", ")
-        print(outfile, values[i])
-        print(outfile, "\n")
+        table = DataFrame(FirstSeq = firstseq,
+                          SecondSeq = secondseq,
+                          WindowFirst = repeat(firsts, outer = length(names1)),
+                          WindowLast = repeat(lasts, outer = length(names1)),
+                          Value = value)
+    else
+        table = DataFrame(FirstSeq = firstseq,
+                          SecondSeq = secondseq,
+                          Window = repeat(windows, outer = length(names1)),
+                          Value = value)
     end
-    close(outfile)
+    return table
 end
 
-function write_results(filename::String, names1::Vector{Symbol},
-    names2::Vector{Symbol}, values::Matrix{Float64})
+function maketable(names1::Vector{Symbol}, names2::Vector{Symbol}, windows::Vector{UnitRange{Int64}}, values::Matrix{SDResult}, sepcol::Bool)
+    nwindows = length(windows)
+    firstseq = repeat(names1, inner = nwindows)
+    secondseq = repeat(names2, inner = nwindows)
+    value = reshape(values, *(size(values)...))
+    maxest = collect(Dating.upper(x) for x in value)
+    midest = collect(Dating.middle(x) for x in value)
+    minest = collect(Dating.lower(x) for x in value)
+    if sepcol
+        firsts = collect(first(x) for x in windows)
+        lasts = collect(last(x) for x in windows)
 
-    outfile = open(filename, "w")
-    for i in 1:length(names1)
-        print(outfile, names1[i])
-        print(outfile, ", ")
-        print(outfile, names2[i])
-        for value in values[:,i]
-            print(outfile, ", ")
-            print(outfile, value)
-        end
-        print(outfile, "\n")
+        table = DataFrame(FirstSeq = firstseq,
+                          SecondSeq = secondseq,
+                          WindowFirst = repeat(firsts, outer = length(names1)),
+                          WindowLast = repeat(lasts, outer = length(names1)),
+                          UpperEstimate = maxest,
+                          MidEstimate = midest,
+                          LowerEstimate = minest)
+    else
+        table = DataFrame(FirstSeq = firstseq,
+                          SecondSeq = secondseq,
+                          Window = repeat(windows, outer = length(names1)),
+                          UpperEstimate = maxest,
+                          MidEstimate = midest,
+                          LowerEstimate = minest)
     end
-    close(outfile)
+    return table
 end
 
-function write_results(filename::String, names1::Vector{Symbol},
-    names2::Vector{Symbol}, values::Vector{SDResult})
-
-    outfile = open(filename, "w")
-    for i in 1:length(names1)
-        print(outfile, names1[i])
-        print(outfile, ", ")
-        print(outfile, names2[i])
-        print(outfile, ", ")
-        print(outfile, lower(values[i]))
-        print(outfile, ", ")
-        print(outfile, Dating.middle(values[i]))
-        print(outfile, ", ")
-        print(outfile, upper(values[i]))
-        print(outfile, "\n")
-    end
-    close(outfile)
+function maketable(names1::Vector{Symbol}, names2::Vector{Symbol}, values::Vector{Float64})
+    return DataFrame(FirstSeq = names1, SecondSeq = names2, Value = values)
 end
 
-function write_results(filename::String, names1::Vector{Symbol},
-    names2::Vector{Symbol}, values::Matrix{SDResult})
-
-    bsnm = basename(filename)
-    pth = dirname(filename)
-
-    minfile = open(joinpath(pth, "min_$bsnm"), "w")
-    midfile = open(joinpath(pth, "mid_$bsnm"), "w")
-    maxfile = open(joinpath(pth, "max_$bsnm"), "w")
-
-    for i in 1:length(names1)
-        print(minfile, names1[i])
-        print(minfile, ", ")
-        print(minfile, names2[i])
-        print(midfile, names1[i])
-        print(midfile, ", ")
-        print(midfile, names2[i])
-        print(maxfile, names1[i])
-        print(maxfile, ", ")
-        print(maxfile, names2[i])
-        for value in values[:,i]
-            print(minfile, ", ")
-            print(minfile, lower(value))
-            print(midfile, ", ")
-            print(midfile, Dating.middle(value))
-            print(maxfile, ", ")
-            print(maxfile, upper(value))
-        end
-        print(minfile, "\n")
-        print(midfile, "\n")
-        print(maxfile, "\n")
-    end
-    close(minfile)
-    close(midfile)
-    close(maxfile)
+function maketable(names1::Vector{Symbol}, names2::Vector{Symbol}, values::Vector{SDResult})
+    minest = collect(Dating.lower(x) for x in values)
+    midest = collect(Dating.middle(x) for x in values)
+    maxest = collect(Dating.upper(x) for x in values)
+    return DataFrame(FirstSeq = names1, SecondSeq = names2,
+                     LowerEst = minest, MiddleEst = midest, UpperEst = maxest)
 end
 
 function compute(args)
@@ -138,7 +105,6 @@ function compute(args)
     println("Loading sequences.")
     index, sequences = gather_sequences(args)
     names1, names2 = generate_names_lists(index)
-
     slen = length(sequences[1])
     for seq in sequences
         @assert length(seq) == slen error("Sequences must be of the same length!")
@@ -154,26 +120,32 @@ function compute(args)
     end
     met = lowercase(args["method"])
     if met == "default"
-        dmethod = SDResult
+        dmethod = SpeedDating
     elseif met == "simple"
-        dmethod = Float64
+        dmethod = SimpleEstimate
     else
         error("Invalid choice of coalescence time estimate method.")
     end
 
+    println("Computing evolutionary distances.")
     if args["scan"]
-        if args["step"] <= 0
-            args["step"] = args["width"]
-        end
-        dists, vars, windows = distance(model, sequences, args["width"], args["step"])
         slen = args["width"]
+        dists, vars, windows = distance(model, sequences, slen, slen)
+        table = maketable(names1, names2, windows, dists, args["sepcol"])
     else
         dists, vars = distance(model, sequences)
+        table = maketable(names1, names2, dists)
     end
-    write_results("$(args["outfile"])_distances.txt", names1, names2, dists)
+    writetable("$(args["outfile"])_distances.csv", table)
 
+    println("Estimating divergence times.")
     if !args["onlydist"]
-        times = dists_to_dates(dists, slen, args["mutation_rate"], dmethod)
-        write_results("$(args["outfile"])_ctimes.txt", names1, names2, times)
+        times = coaltime(slen, dists, args["mutation_rate"], dmethod)
+        if args["scan"]
+            table = maketable(names1, names2, windows, times, args["sepcol"])
+        else
+            table = maketable(names1, names2, times)
+        end
+        writetable("$(args["outfile"])_ctimes.csv", table)
     end
 end

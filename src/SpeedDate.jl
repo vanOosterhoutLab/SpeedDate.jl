@@ -2,6 +2,7 @@ module SpeedDate
 
 using ArgParse
 using Bio: Seq, Var, Phylo.Dating, Indexers
+using DataFrames
 
 include("dating.jl")
 include("visualize.jl")
@@ -52,16 +53,15 @@ function parse_command_line()
             default = "SpeedDate"
             arg_type = String
         "--scan"
-            help = "Whether or not to compute dates across sequences with a sliding window."
+            help = "Whether or not to compute dates across sequences with a window."
             action = :store_true
         "--width", "-w"
-            help = "Width of the sliding window across sequences."
+            help = "Width of the window across sequences."
             arg_type = Int64
             default = 100
-        "--step", "-j"
-            help = "The number of base pairs the sliding window moves by each iteration."
-            arg_type = Int64
-            default = -1
+        "--sepcol", "-c"
+            help = "Write the start and end points of sliding windows in seperate columns of output table."
+            action = :store_true
         "--onlydist"
             action = :store_true
     end
