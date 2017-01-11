@@ -165,6 +165,18 @@
         <li class="first-level active"><a href="#running-speeddate-as-a-command-line-application">Running SpeedDate as a command line application</a></li>
         
     
+        <li class="first-level "><a href="#computing-divergence-times">Computing divergence times</a></li>
+        
+            <li class="second-level"><a href="#entering-dna-sequences">Entering DNA sequences</a></li>
+            
+        
+            <li class="second-level"><a href="#parameters-for-divergence-time-estimation">Parameters for divergence time estimation.</a></li>
+            
+        
+            <li class="second-level"><a href="#extra-options">Extra options</a></li>
+            
+        
+    
     </ul>
 </div></div>
         <div class="col-md-9" role="main">
@@ -176,6 +188,8 @@
 </pre></div>
 
 
+<p><a id='Computing-divergence-times-1'></a></p>
+<h1 id="computing-divergence-times">Computing divergence times</h1>
 <p>The <code>compute</code> command is invoked to compute genetic distances and divergence times for an input aligned FASTA file.</p>
 <p>Use the -h flag to display the possible options for the <code>compute</code> command:</p>
 <div class="codehilite"><pre><span></span>julia -e&quot;using SpeedDate; SpeedDate.main()&quot; compute -h
@@ -206,10 +220,25 @@ optional arguments:
   -w, --width WIDTH     Width of the window across sequences. (type:
                         Int64, default: 100)
   -c, --sepcol          Write the start and end points of sliding
-                        windows in seperate columns of output table.
+                        windows in separate columns of output table.
   --onlydist
   -h, --help            show this help message and exit
-</pre></div></div>
+</pre></div>
+
+
+<p><a id='Entering-DNA-sequences-1'></a></p>
+<h3 id="entering-dna-sequences">Entering DNA sequences</h3>
+<p>You will see that you can enter DNA sequences either from a FASTA formatted file using the <code>-f</code> or <code>--file</code> flags. Alternatively short sequences can be typed out on the command line using the <code>-s</code> or <code>--dnaseqs</code> flags.</p>
+<p><a id='Parameters-for-divergence-time-estimation.-1'></a></p>
+<h3 id="parameters-for-divergence-time-estimation">Parameters for divergence time estimation.</h3>
+<p>SpeedDate computes evolutionary distances between sequences (or windows of sequences if you are estimating divergence times using a sliding window - see below.), by default this is currently the Jukes &amp; Cantor 69 distance, but can be set to Kimura's 80 distance, by providing the option <code>-m k80</code> or <code>--model k80</code>. More estimates are anticipated in future versions.</p>
+<p>SpeedDate requires a mutation rate to estimate divergence times, by default this is 1.0e-8, but may be altered by using the <code>-r</code> or <code>--mutation_rate</code> flag.</p>
+<p>By default the SpeedDate method will be used which gives a 95% CI range for the divergence time, but a simpler estimate can be used which gives a single point estimate of the expected divergence time. To do this pass the flag option <code>--method simple</code>.</p>
+<p>Use the <code>--scan</code> option flag to indicate you want to compute the divergence times for windows across your sequences. Set the size of the windows with the flag <code>-w</code>, e.g. <code>-w 1000</code>.</p>
+<p>When you run SpeedDate a .csv file containing the evolutionary distance measures, and a .csv file containing the divergence time estimates between your sequences will be output. You can set the base name these output files with <code>--outfile</code> or <code>-o</code>.</p>
+<p><a id='Extra-options-1'></a></p>
+<h3 id="extra-options">Extra options</h3>
+<p>If the flag <code>--onlydist</code> is used, then SpeedDate will only compute the evolutionary distance measures and output them to file. It will not go on to produce divergence time estimates.</p></div>
         
     </div>
 
