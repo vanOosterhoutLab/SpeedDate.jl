@@ -16,7 +16,7 @@ function parse_command_line()
             help = "Compute coalescence times."
             action = :command
         "interactive"
-            help = "Start the interactive GUI for SpeedDate"
+            help = "Start the interactive GUI for SpeedDate."
             action = :command
     end
 
@@ -26,7 +26,7 @@ function parse_command_line()
             arg_type = String
             required = false
         "--dnaseqs", "-s"
-            help = "The first of two DNA sequences to test"
+            help = "An array of DNA sequences."
             required = false
             arg_type = BioSequence{DNAAlphabet{4}}
             nargs = '*'
@@ -60,7 +60,7 @@ function parse_command_line()
             arg_type = Int64
             default = 100
         "--sepcol", "-c"
-            help = "Write the start and end points of sliding windows in seperate columns of output table."
+            help = "Write the start and end points of windows in separate columns of output table."
             action = :store_true
         "--onlydist"
             action = :store_true

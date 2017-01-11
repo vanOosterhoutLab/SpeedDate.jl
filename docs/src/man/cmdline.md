@@ -14,10 +14,9 @@ Use the -h flag to display the possible options for the `compute` command:
 
 ```
 julia -e"using SpeedDate; SpeedDate.main()" compute -h
-
 usage: <PROGRAM> compute [-f FILE] [-s [DNASEQS...]] [-m MODEL]
                         [-r MUTATION_RATE] [--method METHOD]
-                        [-o OUTFILE] [--scan] [-w WIDTH] [-j STEP]
+                        [-o OUTFILE] [--scan] [-w WIDTH] [-c]
                         [--onlydist] [-h]
 
 optional arguments:
@@ -38,12 +37,11 @@ optional arguments:
                         Base name for the output files(s). (default:
                         "SpeedDate")
   --scan                Whether or not to compute dates across
-                        sequences with a sliding window.
-  -w, --width WIDTH     Width of the sliding window across sequences.
-                        (type: Int64, default: 100)
-  -j, --step STEP       The number of base pairs the sliding window
-                        moves by each iteration. (type: Int64,
-                        default: -1)
+                        sequences with a window.
+  -w, --width WIDTH     Width of the window across sequences. (type:
+                        Int64, default: 100)
+  -c, --sepcol          Write the start and end points of sliding
+                        windows in seperate columns of output table.
   --onlydist
   -h, --help            show this help message and exit
 ```
