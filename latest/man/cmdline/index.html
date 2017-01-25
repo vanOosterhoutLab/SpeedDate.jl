@@ -177,6 +177,9 @@
             
         
     
+        <li class="first-level "><a href="#plotting-speeddate-results">Plotting SpeedDate results</a></li>
+        
+    
     </ul>
 </div></div>
         <div class="col-md-9" role="main">
@@ -238,7 +241,51 @@ optional arguments:
 <p>When you run SpeedDate a .csv file containing the evolutionary distance measures, and a .csv file containing the divergence time estimates between your sequences will be output. You can set the base name these output files with <code>--outfile</code> or <code>-o</code>.</p>
 <p><a id='Extra-options-1'></a></p>
 <h3 id="extra-options">Extra options</h3>
-<p>If the flag <code>--onlydist</code> is used, then SpeedDate will only compute the evolutionary distance measures and output them to file. It will not go on to produce divergence time estimates.</p></div>
+<p>If the flag <code>--onlydist</code> is used, then SpeedDate will only compute the evolutionary distance measures and output them to file. It will not go on to produce divergence time estimates.   </p>
+<p><a id='Plotting-SpeedDate-results-1'></a></p>
+<h1 id="plotting-speeddate-results">Plotting SpeedDate results</h1>
+<p>The <code>compute</code> command will write out the results to file as a data-frame, in a text-based file format (csv). This format should be familiar to users of R and other software frameworks that use a similar tabular data structure.</p>
+<p>The <code>plot</code> command is invoked to plot the results of a <code>compute</code> run. Of course the user can use whatever plotting solution they desire if they are happy scripting with the resulting data-frame files.</p>
+<p>The plot command is very simple and will create simple heat plots using the <a href="http://gadflyjl.org/stable/">Gadfly.jl</a> framework.</p>
+<p>The options available to the user for plotting can be viewed using the <code>-h</code> flag:</p>
+<div class="codehilite"><pre><span></span>julia -e&quot;using SpeedDate; SpeedDate.main()&quot; plot -h
+
+usage: &lt;PROGRAM&gt; plot [--width WIDTH] [--height HEIGHT]
+                      [--units UNITS] [--backend BACKEND]
+                      [--reference REFERENCE] [-h] [inputfile]
+                      [outputfile]
+
+positional arguments:
+  inputfile             The file name of the input data.
+  outputfile            The file name of the output plot.
+
+optional arguments:
+  --width WIDTH         Width of the plot. (type: Float64, default:
+                        12.0)
+  --height HEIGHT       Height of the plot. (type: Float64, default:
+                        8.0)
+  --units UNITS         Units for width and height of the plot.  Must
+                        be one of &#39;inch&#39;, &#39;mm&#39;, or &#39;cm&#39;.  (default:
+                        &quot;cm&quot;)
+  --backend BACKEND     The backend used to produce the plot.  Must be
+                        one of &#39;svg&#39;, &#39;svgjs&#39;, &#39;png&#39;, &#39;pdf&#39;, &#39;ps&#39;, or
+                        &#39;pgf&#39;.  (default: &quot;svg&quot;)
+  --reference REFERENCE
+                        The name of the DNA sequence to use as a
+                        reference when plotting a windowed analysis.
+                        (default: &quot;default&quot;)
+  -h, --help            show this help message and exit
+</pre></div>
+
+
+<p>The command is very simple, with two obligatory arguments: first the filename of a SpeedDate results file is provided, followed by a name for the output plot.</p>
+<p>Optionally: You can set the width and the height of the generated plot with the flags <code>--width</code> and <code>--height</code>, and you can specify the units of the width and height (in mm, cm, or inches), with the <code>--units</code> flag. By default the units are in centimeters (cm).</p>
+<p>You can choose which backend is used to save the plot (i.e. the file format) using the <code>--backend</code> flag. Most commonly you will want a vectorized format ("svg" or "pdf"), or a rasterized format ("png"). By default the plot will be drawn using an SVG backend.</p>
+<p>Finally, if you are plotting results from a SpeedDate run which used a sliding window, then you can set the name of the sequence to use as the reference sequence, against which all other sequences are plotted. By default, this falls back to the first sequence name that is mentioned in the results file you give the plot command.</p>
+<p>This command can plot distances or divergence times produced by SpeedDate. The divergence times plotted are the "middle estimates". Recall from the intro of this manual that SpeedDate makes upper, middle, and lower estimates of the divergence time, forming a 95% confidence interval in which the true age is estimated to lie.</p>
+<p>An example usage is below. The input file is called "SpeedDate_distances.csv", the output plot is given the name "myplot", the plot is written out in PNG format, and the width and height of the plot are set to 50 and 45 cm.</p>
+<div class="codehilite"><pre><span></span>julia -e&quot;using SpeedDate; SpeedDate.main()&quot; plot SpeedDate_distances.csv testplot --backend png --width 50.0 --height 45.0
+</pre></div></div>
         
     </div>
 
