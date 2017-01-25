@@ -35,30 +35,22 @@ function generate_names_lists(indexer::Indexer)
     return list1, list2
 end
 
-function maketable(names1::Vector{Symbol}, names2::Vector{Symbol}, windows::Vector{UnitRange{Int64}}, values::Matrix{Float64}, sepcol::Bool)
+function maketable(names1::Vector{Symbol}, names2::Vector{Symbol}, windows::Vector{UnitRange{Int64}}, values::Matrix{Float64})
     nwindows = length(windows)
     firstseq = repeat(names1, inner = nwindows)
     secondseq = repeat(names2, inner = nwindows)
     value = reshape(values, *(size(values)...))
-    if sepcol
-        firsts = collect(first(x) for x in windows)
-        lasts = collect(last(x) for x in windows)
-
-        table = DataFrame(FirstSeq = firstseq,
-                          SecondSeq = secondseq,
-                          WindowFirst = repeat(firsts, outer = length(names1)),
-                          WindowLast = repeat(lasts, outer = length(names1)),
-                          Value = value)
-    else
-        table = DataFrame(FirstSeq = firstseq,
-                          SecondSeq = secondseq,
-                          Window = repeat(windows, outer = length(names1)),
-                          Value = value)
-    end
+    firsts = collect(first(x) for x in windows)
+    lasts = collect(last(x) for x in windows)
+    table = DataFrame(FirstSeq = firstseq,
+                      SecondSeq = secondseq,
+                      WindowFirst = repeat(firsts, outer = length(names1)),
+                      WindowLast = repeat(lasts, outer = length(names1)),
+                      Value = value)
     return table
 end
 
-function maketable(names1::Vector{Symbol}, names2::Vector{Symbol}, windows::Vector{UnitRange{Int64}}, values::Matrix{SDResult}, sepcol::Bool)
+function maketable(names1::Vector{Symbol}, names2::Vector{Symbol}, windows::Vector{UnitRange{Int64}}, values::Matrix{SDResult})
     nwindows = length(windows)
     firstseq = repeat(names1, inner = nwindows)
     secondseq = repeat(names2, inner = nwindows)
@@ -66,25 +58,15 @@ function maketable(names1::Vector{Symbol}, names2::Vector{Symbol}, windows::Vect
     maxest = collect(Dating.upper(x) for x in value)
     midest = collect(Dating.middle(x) for x in value)
     minest = collect(Dating.lower(x) for x in value)
-    if sepcol
-        firsts = collect(first(x) for x in windows)
-        lasts = collect(last(x) for x in windows)
-
-        table = DataFrame(FirstSeq = firstseq,
-                          SecondSeq = secondseq,
-                          WindowFirst = repeat(firsts, outer = length(names1)),
-                          WindowLast = repeat(lasts, outer = length(names1)),
-                          UpperEstimate = maxest,
-                          MidEstimate = midest,
-                          LowerEstimate = minest)
-    else
-        table = DataFrame(FirstSeq = firstseq,
-                          SecondSeq = secondseq,
-                          Window = repeat(windows, outer = length(names1)),
-                          UpperEstimate = maxest,
-                          MidEstimate = midest,
-                          LowerEstimate = minest)
-    end
+    firsts = collect(first(x) for x in windows)
+    lasts = collect(last(x) for x in windows)
+    table = DataFrame(FirstSeq = firstseq,
+                      SecondSeq = secondseq,
+                      WindowFirst = repeat(firsts, outer = length(names1)),
+                      WindowLast = repeat(lasts, outer = length(names1)),
+                      UpperEstimate = maxest,
+                      MidEstimate = midest,
+                      LowerEstimate = minest)
     return table
 end
 
@@ -97,7 +79,7 @@ function maketable(names1::Vector{Symbol}, names2::Vector{Symbol}, values::Vecto
     midest = collect(Dating.middle(x) for x in values)
     maxest = collect(Dating.upper(x) for x in values)
     return DataFrame(FirstSeq = names1, SecondSeq = names2,
-                     LowerEst = minest, MiddleEst = midest, UpperEst = maxest)
+                     LowerEstimate = minest, MidEstimate = midest, UpperEstimate = maxest)
 end
 
 function compute(args)
@@ -129,9 +111,14 @@ function compute(args)
 
     println("Computing evolutionary distances.")
     if args["scan"]
+        #if args["step"] <= 0
+        #    args["step"] = args["width"]
+        #end
+        #dists, vars, windows = distance(model, sequences, args["width"], args["step"])
+        dists, vars, windows = distance(model, sequences, args["width"], args["width"])
         slen = args["width"]
         dists, vars, windows = distance(model, sequences, slen, slen)
-        table = maketable(names1, names2, windows, dists, args["sepcol"])
+        table = maketable(names1, names2, windows, dists)
     else
         dists, vars = distance(model, sequences)
         table = maketable(names1, names2, dists)
@@ -142,7 +129,7 @@ function compute(args)
     if !args["onlydist"]
         times = coaltime(slen, dists, args["mutation_rate"], dmethod)
         if args["scan"]
-            table = maketable(names1, names2, windows, times, args["sepcol"])
+            table = maketable(names1, names2, windows, times)
         else
             table = maketable(names1, names2, times)
         end
