@@ -165,6 +165,9 @@
         <li class="first-level active"><a href="#using-speeddate-from-a-julia-script-or-session">Using SpeedDate from a julia script or session</a></li>
         
     
+        <li class="first-level "><a href="#plotting-speeddate-results-from-a-julia-script-or-session">Plotting SpeedDate results from a julia script or session</a></li>
+        
+    
     </ul>
 </div></div>
         <div class="col-md-9" role="main">
@@ -202,6 +205,36 @@
 <li>"scan": true</li>
 <li>"size": A number representing the sliding window size.</li>
 <li>"step": A number representing the sliding window step.</li>
+</ul>
+<p><a id='Plotting-SpeedDate-results-from-a-julia-script-or-session-1'></a></p>
+<h1 id="plotting-speeddate-results-from-a-julia-script-or-session">Plotting SpeedDate results from a julia script or session</h1>
+<p>You can plot the results of the SpeedDate program from within a julia console session or script.</p>
+<p>To do this, create a dictionary of arguments and then give that to the <code>SpeedDate.visualize</code> function.</p>
+<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">SpeedDate</span>
+
+<span class="n">options</span> <span class="o">=</span> <span class="kt">Dict</span><span class="p">(</span><span class="s">&quot;width&quot;</span> <span class="o">=&gt;</span> <span class="mf">12.0</span><span class="p">,</span>
+               <span class="s">&quot;height&quot;</span> <span class="o">=&gt;</span> <span class="mf">8.0</span><span class="p">,</span>
+               <span class="s">&quot;units&quot;</span> <span class="o">=&gt;</span> <span class="s">&quot;cm&quot;</span><span class="p">,</span>
+               <span class="s">&quot;backend&quot;</span> <span class="o">=&gt;</span> <span class="s">&quot;svg&quot;</span><span class="p">,</span>
+               <span class="s">&quot;reference&quot;</span> <span class="o">=&gt;</span> <span class="s">&quot;default&quot;</span><span class="p">,</span>
+               <span class="s">&quot;table&quot;</span> <span class="o">=&gt;</span> <span class="kc">false</span><span class="p">,</span>
+               <span class="s">&quot;inputfile&quot;</span> <span class="o">=&gt;</span> <span class="s">&quot;myresults.csv&quot;</span><span class="p">,</span>
+               <span class="s">&quot;outputfile&quot;</span> <span class="o">=&gt;</span> <span class="s">&quot;myplot.svg&quot;</span><span class="p">)</span>
+
+<span class="n">SpeedDate</span><span class="o">.</span><span class="n">visualize</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+</pre></div>
+
+
+<p>The arguments dictionary should have the following fields:</p>
+<ul>
+<li>"width": Width of the plot.</li>
+<li>"height": Height of the plot.</li>
+<li>"units": Units for width and height of the plot ("cm", "mm" or "inch").</li>
+<li>"backend": The backend used to produce the plot.</li>
+<li>"reference": The name of the DNA sequence to use as a reference when plotting a windowed analysis.</li>
+<li>"table": Set to true to write out the table that was generated for plotting - only really useful for debugging.</li>
+<li>"inputfile": The pathname of the SpeedDate results file you want to plot.</li>
+<li>"outputfile": A name for the output plot.</li>
 </ul></div>
         
     </div>
