@@ -36,3 +36,38 @@ to the dictionary:
 - "scan": true
 - "size": A number representing the sliding window size.
 - "step": A number representing the sliding window step.
+
+# Plotting SpeedDate results from a julia script or session
+
+You can plot the results of the SpeedDate program from within a julia console
+session or script.
+
+To do this, create a dictionary of arguments and then give that to the
+`SpeedDate.visualize` function.
+
+```julia
+using SpeedDate
+
+options = Dict("width" => 12.0,
+               "height" => 8.0,
+               "units" => "cm",
+               "backend" => "svg",
+               "reference" => "default",
+               "table" => false,
+               "inputfile" => "myresults.csv",
+               "outputfile" => "myplot.svg")
+
+SpeedDate.visualize(options)
+
+```
+
+The arguments dictionary should have the following fields:
+
+- "width": Width of the plot.
+- "height": Height of the plot.
+- "units": Units for width and height of the plot ("cm", "mm" or "inch").
+- "backend": The backend used to produce the plot.
+- "reference": The name of the DNA sequence to use as a reference when plotting a windowed analysis.
+- "table": Set to true to write out the table that was generated for plotting - only really useful for debugging.
+- "inputfile": The pathname of the SpeedDate results file you want to plot.
+- "outputfile": A name for the output plot.

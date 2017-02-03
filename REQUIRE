@@ -1,5 +1,4 @@
 julia 0.5
-Query
 DataFrames
 Gadfly
 Bio 0.4.3

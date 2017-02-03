@@ -66,30 +66,61 @@ function clock_collect(names::Vector{Symbol}, dates::Matrix{Float64})
 end
 =#
 
-function filter_by_ref(df::DataFrame, seqname::String)
-    return @from i in df begin
-        @where i.FirstSeq == seqname || i.SecondSeq == seqname
-        @select i
-        @collect DataFrame
+function filter_by_ref(df, ref)
+    a = df[:FirstSeq]
+    b = df[:SecondSeq]
+    idx = [(a[i] == ref) || (b[i] == ref) for i in 1:length(a)]
+    return df[idx, :]
+end
+
+function sequence_names(df, ref)
+    return [df[i, :FirstSeq] != ref ? df[i, :FirstSeq] : df[i, :SecondSeq] for i in 1:nrow(df)]
+end
+
+function heatplot_y_order(df, col)
+    level_values = levels(df[:SeqName])
+    means = Vector{Float64}(length(level_values))
+    vals = Vector{Float64}(df[col])
+    m = 1
+    for sname in level_values
+        idx = df[:SeqName] .== sname
+        subvals = vals[idx]
+        means[m] = sum(subvals)
+        m += 1
     end
+    o = sortperm(means)
+    return o
 end
 
 function heatplot(df::DataFrame, col::Symbol, legend::String)
-    return plot(df, x = :FirstSeq, y = :SecondSeq, color = col, Geom.rectbin,
+    return (plot(df, x = :FirstSeq, y = :SecondSeq, color = col, Geom.rectbin,
                 Guide.xlabel("Sequence name"), Guide.ylabel("Sequence name"),
                 Guide.colorkey(legend),
-                Guide.title("$(legend) between sequences"))
+                Guide.title("$(legend) between sequences")), df)
 end
 
 function heatplot(df::DataFrame, col::Symbol, ref::String, legend::String)
     if ref == "default"
         ref = df[:FirstSeq][1]
     end
-    filtered = filter_by_ref(df, ref)
-    return plot(df, x = :WindowFirst, y = :SecondSeq, color = col, Geom.rectbin,
+
+    df = filter_by_ref(df, ref)
+    df[:RefName] = fill!(Vector{String}(nrow(df)), ref)
+    df[:SeqName] = sequence_names(df, ref)
+    pool!(df, [:RefName, :SeqName])
+
+    idx = [isnan(i) for i in df[col]]
+    df[idx, col] = NA
+
+    complete_df = df[complete_cases(df), :]
+
+    o = heatplot_y_order(complete_df, col)
+
+    return (plot(complete_df, x = :WindowFirst, y = :SeqName, color = col, Geom.rectbin,
          Guide.xlabel("Window Start (bp)"), Guide.ylabel("Sequence name"),
          Guide.colorkey(legend), Coord.cartesian(xmin = 0),
-         Guide.title("$(legend) between $(ref) and other sequences (sliding window)"))
+         Guide.title("$(legend) between $(ref) and other sequences (sliding window)"),
+         Scale.y_discrete(order = o)), df)
 end
 
 #using Plots; gr(); sticks(linspace(0.25π,1.5π,5), rand(5), proj=:polar, yerr=.1)
@@ -106,18 +137,18 @@ function visualize(args)
         leg = "Genetic distance"
         if is_windowed_data(df)
             # Data is computed across a sliding window.
-            p = heatplot(df, :Value, args["reference"], leg)
+            p, d = heatplot(df, :Value, args["reference"], leg)
         else
-            p = heatplot(df, :Value, leg)
+            p, d = heatplot(df, :Value, leg)
         end
     else
         # Data frame contains dates.
         leg = "Divergence time"
         if is_windowed_data(df)
             # Data is computed across a sliding window.
-            p = heatplot(df, :MidEstimate, args["reference"], leg)
+            p, d = heatplot(df, :MidEstimate, args["reference"], leg)
         else
-            p = heatplot(df, :MidEstimate, leg)
+            p, d = heatplot(df, :MidEstimate, leg)
         end
     end
 
@@ -127,6 +158,10 @@ function visualize(args)
     unit = process_units(args["units"])
     w = args["width"] * unit
     h = args["height"] * unit
+
+    if args["table"]
+        writetable("$(args["outputfile"])_plottable.csv", d)
+    end
 
     draw(backend("$(args["outputfile"]).$bkend", w, h), p)
 end
