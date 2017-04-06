@@ -77,18 +77,22 @@ function sequence_names(df, ref)
     return [df[i, :FirstSeq] != ref ? df[i, :FirstSeq] : df[i, :SecondSeq] for i in 1:nrow(df)]
 end
 
-function heatplot_y_order(df, col)
+function heatplot_y_order(df, col, bysim)
     level_values = levels(df[:SeqName])
-    means = Vector{Float64}(length(level_values))
-    vals = Vector{Float64}(df[col])
-    m = 1
-    for sname in level_values
-        idx = df[:SeqName] .== sname
-        subvals = vals[idx]
-        means[m] = sum(subvals)
-        m += 1
+    if bysim
+        means = Vector{Float64}(length(level_values))
+        vals = Vector{Float64}(df[col])
+        m = 1
+        for sname in level_values
+            idx = df[:SeqName] .== sname
+            subvals = vals[idx]
+            means[m] = sum(subvals)
+            m += 1
+        end
+        o = sortperm(means)
+    else
+        o = sortperm(level_values)
     end
-    o = sortperm(means)
     return o
 end
 
@@ -99,7 +103,7 @@ function heatplot(df::DataFrame, col::Symbol, legend::String)
                 Guide.title("$(legend) between sequences")), df)
 end
 
-function heatplot(df::DataFrame, col::Symbol, ref::String, legend::String)
+function heatplot(df::DataFrame, col::Symbol, ref::String, legend::String, sortsim::Bool)
     if ref == "default"
         ref = df[:FirstSeq][1]
     end
@@ -114,7 +118,7 @@ function heatplot(df::DataFrame, col::Symbol, ref::String, legend::String)
 
     complete_df = df[complete_cases(df), :]
 
-    o = heatplot_y_order(complete_df, col)
+    o = heatplot_y_order(complete_df, col, sortsim)
 
     return (plot(complete_df, x = :WindowFirst, y = :SeqName, color = col, Geom.rectbin,
          Guide.xlabel("Window Start (bp)"), Guide.ylabel("Sequence name"),
@@ -146,7 +150,7 @@ function visualize(args)
         leg = "Divergence time"
         if is_windowed_data(df)
             # Data is computed across a sliding window.
-            p, d = heatplot(df, :MidEstimate, args["reference"], leg)
+            p, d = heatplot(df, :MidEstimate, args["reference"], leg, args["sortsim"])
         else
             p, d = heatplot(df, :MidEstimate, leg)
         end

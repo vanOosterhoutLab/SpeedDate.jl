@@ -104,6 +104,9 @@ function parse_command_line()
         "--table"
             help = "Save the table used for plotting to file."
             action = :store_true
+        "--sortsim"
+            help = "Sort the seqences in the plot by how similar they are."
+            action = :store_true
         "inputfile"
             help = "The file name of the input data."
             arg_type = String
