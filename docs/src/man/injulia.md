@@ -54,6 +54,7 @@ options = Dict("width" => 12.0,
                "backend" => "svg",
                "reference" => "default",
                "table" => false,
+               "sortsim" => false,
                "inputfile" => "myresults.csv",
                "outputfile" => "myplot.svg")
 
@@ -69,5 +70,6 @@ The arguments dictionary should have the following fields:
 - "backend": The backend used to produce the plot.
 - "reference": The name of the DNA sequence to use as a reference when plotting a windowed analysis.
 - "table": Set to true to write out the table that was generated for plotting - only really useful for debugging.
+- "sortsim": Set to true to sort the rows of the output table by average sequence similarity if you are plotting a windowed analysis. 
 - "inputfile": The pathname of the SpeedDate results file you want to plot.
 - "outputfile": A name for the output plot.

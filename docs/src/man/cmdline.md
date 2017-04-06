@@ -129,7 +129,11 @@ optional arguments:
                         The name of the DNA sequence to use as a
                         reference when plotting a windowed analysis.
                         (default: "default")
-  -h, --help            show this help message and exit
+  --table               Save the table used for plotting to file.
+  --sortsim             Sort the rows of the output table by average
+                        sequence similarity if you are plotting a
+                        windowed analysis.
+  -h, --help            show this help message and exit.
 ```
 
 The command is very simple, with two obligatory arguments: first the filename
