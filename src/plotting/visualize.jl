@@ -116,15 +116,22 @@ function heatplot(df::DataFrame, col::Symbol, ref::String, legend::String, sorts
     idx = [isnan(i) for i in df[col]]
     df[idx, col] = NA
 
-    complete_df = df[complete_cases(df), :]
-
+    complete_df = df[completecases(df), [:RefName, :SeqName, :WindowFirst, :WindowLast, col]]
+    firsts = unique(df[:WindowFirst])
+    lasts = unique(df[:WindowLast])
+    refnm = fill!(Vector{String}(length(firsts)), ref)
+    seqnm = fill!(Vector{String}(length(firsts)), ref)
+    os = fill!(Vector{eltype(df[col])}(length(firsts)), 0)
+    oframe = DataFrame([refnm, seqnm, firsts, lasts, os],
+                    [:RefName, :SeqName, :WindowFirst, :WindowLast, col])
+    complete_df = vcat(complete_df, oframe)
     o = heatplot_y_order(complete_df, col, sortsim)
 
     return (plot(complete_df, x = :WindowFirst, y = :SeqName, color = col, Geom.rectbin,
          Guide.xlabel("Window Start (bp)"), Guide.ylabel("Sequence name"),
          Guide.colorkey(legend), Coord.cartesian(xmin = 0),
          Guide.title("$(legend) between $(ref) and other sequences (sliding window)"),
-         Scale.y_discrete(order = o)), df)
+         Scale.y_discrete(order = o)), complete_df)
 end
 
 #using Plots; gr(); sticks(linspace(0.25π,1.5π,5), rand(5), proj=:polar, yerr=.1)
