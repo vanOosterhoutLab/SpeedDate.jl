@@ -148,7 +148,7 @@ function visualize(args)
         leg = "Genetic distance"
         if is_windowed_data(df)
             # Data is computed across a sliding window.
-            p, d = heatplot(df, :Value, args["reference"], leg)
+            p, d = heatplot(df, :Value, args["reference"], leg, args["sortsim"])
         else
             p, d = heatplot(df, :Value, leg)
         end
