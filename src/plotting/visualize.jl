@@ -127,11 +127,20 @@ function heatplot(df::DataFrame, col::Symbol, ref::String, legend::String, sorts
     complete_df = vcat(complete_df, oframe)
     o = heatplot_y_order(complete_df, col, sortsim)
 
-    return (plot(complete_df, x = :WindowFirst, y = :SeqName, color = col, Geom.rectbin,
-         Guide.xlabel("Window Start (bp)"), Guide.ylabel("Sequence name"),
-         Guide.colorkey(legend), Coord.cartesian(xmin = 0),
-         Guide.title("$(legend) between $(ref) and other sequences (sliding window)"),
-         Scale.y_discrete(order = o)), complete_df)
+    return (
+        plot(
+            complete_df,
+            x = :WindowFirst,
+            y = :SeqName,
+            color = col,
+            Geom.rectbin,
+            Guide.xlabel("Window Start (bp)"), Guide.ylabel("Sequence name"),
+            Guide.colorkey(legend), Coord.cartesian(xmin = 0),
+            Guide.title("$(legend) between $(ref) and other sequences (sliding window)"),
+            Scale.y_discrete(order = o),
+            Scale.color_continuous(colormap=Scale.lab_gradient("blue", "red"))
+        ),
+        complete_df)
 end
 
 #using Plots; gr(); sticks(linspace(0.25π,1.5π,5), rand(5), proj=:polar, yerr=.1)
