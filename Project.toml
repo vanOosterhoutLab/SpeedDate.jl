@@ -12,4 +12,9 @@ Roots = "f2b01f46-fcfa-551c-844a-d8ac1e96c665"
 Twiddle = "7200193e-83a8-5a55-b20d-5d36d44a0795"
 
 [compat]
+BioSequences = "2.0"
+Roots = "1.0"
+PairwiseListMatrices = "0.7"
+FASTX = "1.1"
+Distributions = "0.23"
 julia = "1.3"
