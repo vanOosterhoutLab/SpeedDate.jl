@@ -1,10 +1,19 @@
 using Documenter, SpeedDate
 
-custom_deps() = run(`pip install --user pygments mkdocs mkdocs-biojulia`)
-makedocs()
+makedocs(
+    modules = [SpeedDate],
+    format = Documenter.HTML(),
+    sitename = "SpeedDate.jl",
+    authors = replace(join(Pkg.TOML.parsefile("Project.toml")["authors"], ", "), r" <.*?>" => "" ),
+    pages = [
+        "Home" => "index.md",
+        "Manual" => "manual.md"
+    ]
+)
+
 deploydocs(
-           repo = "github.com/Ward9250/SpeedDate.jl.git",
-           julia = "0.5",
-           osname = "linux",
-           deps = custom_deps
-           )
+    repo = "github.com/vanOosterhoutLab/SpeedDate.jl.git",
+    push_preview = true,
+    deps = nothing,
+    make = nothing
+)
