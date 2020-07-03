@@ -1,9 +1,26 @@
-# SpeedDate.jl
+# SpeedDate
 
-A simple tool for the estimation of coalescence times between sequences.
-Created with julia and [Bio.jl](https://github.com/BioJulia/Bio.jl)
+[![Latest release](https://img.shields.io/github/release/vanOosterhoutLab/SpeedDate.jl.svg)](https://github.com/vanOosterhoutLab/SpeedDate.jl/releases/latest)
+[![MIT license](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/vanOosterhoutLab/SpeedDate.jl/blob/master/LICENSE)
+[![Stable documentation](https://img.shields.io/badge/docs-stable-blue.svg)](https://vanoosterhoutlab.github.io/SpeedDate.jl/stable)
+[![Dev documentation](https://img.shields.io/badge/docs-dev-blue.svg)](https://vanoosterhoutlab.github.io/SpeedDate.jl/dev)
+[![Pkg Status](http://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus.org/#wip)
 
-[Documentation](https://ward9250.github.io/SpeedDate.jl/latest)
 
-_A note about unit tests, as SpeedDate essentially wraps Bio.jl functionality in a command line or GTK gui, no unit tests have been included yet, as the functions used have their own unit tests in the BioJulia project in which they are defined.
-However I intend to test routines and datasets will be included in the near future._
+## Description
+
+A utility for rapidly estimating coalescence times between sequences.
+
+## Quick-start installation
+
+Fire up a julia interactive window.
+
+In the window press the ']' key.
+
+You should observe the prompt change from `julia>` to `pkg>`.
+
+Type in `add SpeedDate` and hit enter.
+
+Press backspace and you should see the prompt change back to `julia>`.
+
+That's it!

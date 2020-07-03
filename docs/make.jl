@@ -1,4 +1,4 @@
-using Documenter, SpeedDate
+using Documenter, SpeedDate, Pkg
 
 makedocs(
     modules = [SpeedDate],
@@ -7,7 +7,11 @@ makedocs(
     authors = replace(join(Pkg.TOML.parsefile("Project.toml")["authors"], ", "), r" <.*?>" => "" ),
     pages = [
         "Home" => "index.md",
-        "Manual" => "manual.md"
+        "Manual" => [
+            "Introduction" => "man/intro.md",
+            "Loading Data" => "man/loading.md",
+            "Dating Sequences" => "man/dating.md"
+        ]
     ]
 )
 

@@ -1,14 +1,21 @@
 module SpeedDate
 
-using Distributions, Roots, PairwiseListMatrices
+export count_mutations
+
+using BioSequences, FASTX, Distributions, Roots, PairwiseListMatrices
 
 # For bit-parallel mutation counting
-import Twiddle: enumerate_nibbles, nibble_mask
+import Twiddle: enumerate_nibbles, nibble_mask, count_nonzero_nibbles, count_1111_nibbles
+
+# Needed for using BioSequences' bit-wise operations code generator
+import BioSequences: bitindex, encoded_data, index, offset, bitmask
 
 include("estimation_algorithm.jl")
-include("dating/dating.jl")
-include("plotting/visualize.jl")
+include("pairwise_distance.jl")
+#include("dating/dating.jl")
+#include("plotting/visualize.jl")
 
+#=
 function parse_command_line()
     s = ArgParseSettings()
     s.add_help = true
@@ -136,5 +143,6 @@ function main()
         #(STDOUT, "SpeedDate could not complete analysis.\nReason:\n$(err.msg)\n")
     #end
 end
+=#
 
-end
+end # Module
