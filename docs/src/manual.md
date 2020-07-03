@@ -1,17 +1,15 @@
 # Introduction
 
-SpeedDate is the name given to a method of estimating a divergence time between
-two DNA sequence regions that was first implemented in the R package
-[HybridCheck](https://github.com/Ward9250/HybridCheck) in order to date regions
-of introgression in large sequence contigs.
+SpeedDate is a method of estimating a divergence time between two DNA sequences.
+It was first implemented in the R package [HybridCheck](https://github.com/vanOosterhoutLab/HybridCheck)
+in order to date regions of introgression between homologous contigs of assembled
+genomes.
 
-The current SpeedDate is implemented in the
-[SpeedDate.jl](https://github.com/Ward9250/SpeedDate.jl) package, which depends
-on [Bio.jl](https://github.com/BioJulia/Bio.jl) for core functionality like the
-input and output of DNA sequences and data, and computation of mutation counts
-and genetic distances.
+This SpeedDate package implements the very same algorithm in Julia, making it
+faster than the original implementation. It is also built on top of packages
+in the BioJulia framework, including [BioSequences.jl](https://github.com/BioJulia/BioSequences.jl).
 
-## The dating estimation method
+# How does the estimation method work?
 
 The divergence time is estimated using the number of mutations that have
 occurred between two aligned sequences.
@@ -43,7 +41,3 @@ $f(n, k, 2\mu t, Pr(X \le k) = \left( \sum_{i=0}^{\lfloor k \rfloor} \binom{n}{i
 This results in an upper, middle, and lower estimate of the coalescence time
 $t$ of the two sequences (expressed as the number of generations).
 
-This method has been written into the Phylo module of the flagship package of
-the BioJulia project, Bio.jl as a function called `coaltime`, and SpeedDate
-simply bundles the steps of loading data, conting mutations in sequences, and
-passing that information to `coaltime`, and writing results to file, easier.

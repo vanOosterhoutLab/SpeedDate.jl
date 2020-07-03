@@ -1,10 +1,11 @@
-__precompile__()
-
 module SpeedDate
 
-using Bio: Seq, Var, Phylo.Dating, Indexers
-using ArgParse, DataFrames, Gadfly
+using Distributions, Roots, PairwiseListMatrices
 
+# For bit-parallel mutation counting
+import Twiddle: enumerate_nibbles, nibble_mask
+
+include("estimation_algorithm.jl")
 include("dating/dating.jl")
 include("plotting/visualize.jl")
 
