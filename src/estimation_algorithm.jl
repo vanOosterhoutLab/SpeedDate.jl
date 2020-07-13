@@ -63,3 +63,6 @@ mutation accumulation between two sequences as a bernoulli process.
     return estimate_time(N, K, µ)
 end
 
+function estimate_time(m::MutationCount, μ::Float64)
+    return estimate_time(m.n_sites, m.n_mutations, μ)
+end

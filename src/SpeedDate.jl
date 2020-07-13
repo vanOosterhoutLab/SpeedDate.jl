@@ -10,6 +10,7 @@ import Twiddle: enumerate_nibbles, nibble_mask, count_nonzero_nibbles, count_111
 # Needed for using BioSequences' bit-wise operations code generator
 import BioSequences: bitindex, encoded_data, index, offset, bitmask
 
+include("count_mutations.jl")
 include("estimation_algorithm.jl")
 include("pairwise_distance.jl")
 #include("dating/dating.jl")
