@@ -66,3 +66,5 @@ end
 function estimate_time(m::MutationCount, μ::Float64)
     return estimate_time(m.n_sites, m.n_mutations, μ)
 end
+
+estimate_time(V::Vector{MutationCount}, μ::Float64) = [estimate_time(v, μ) for v in V]

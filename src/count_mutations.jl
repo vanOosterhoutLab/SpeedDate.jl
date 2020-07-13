@@ -59,6 +59,19 @@ struct MutationCount
     n_sites::Int
 end
 
-count_mutations(seqa::LongSequence{<:NucleicAcidAlphabet}, seqb::LongSequence{<:NucleicAcidAlphabet}) = count_mutations(promote(seqa, seqb)...)
+count_mutations(seqa::LongSequence{<:NucleicAcidAlphabet}, seqb::LongSequence{<:NucleicAcidAlphabet}, args...) = count_mutations(promote(seqa, seqb)..., args...)
 count_mutations(seqa::LongSequence{DNAAlphabet{2}}, seqb::LongSequence{DNAAlphabet{2}}) = MutationCount(count_n_mutations(seqa, seqb), min(length(seqa), length(seqb)))
 count_mutations(seqa::LongSequence{DNAAlphabet{4}}, seqb::LongSequence{DNAAlphabet{4}}) = MutationCount(count_n_mutations(seqa, seqb)...)
+
+function count_mutations(A::LongSequence{T}, B::LongSequence{T}, win_size::Int) where {T<:DNAAlphabet}
+    L = min(length(A, B))
+    last = win_size
+    V = Vector{MutationCount}()
+    for i in last:L
+        first = last - win_size + 1
+        a = A[first:last]
+        b = B[first:last]
+        push!(V, count_mutations(a, b))
+    end
+    return V
+end
