@@ -15,12 +15,12 @@ using Test, SpeedDate, BioSequences
     
         @testset "2 - Bit" begin
             dnaA, dnaB = generate_possibilities_tester(DNAAlphabet{2})
-            @test count_mutations(dnaA, dnaB) == count_mutations(dnaB, dnaA) == 6
+            @test SpeedDate.count_n_mutations(dnaA, dnaB) == SpeedDate.count_n_mutations(dnaB, dnaA) == 6
         end
     
         @testset "4 - Bit" begin
             dnaA, dnaB = generate_possibilities_tester(DNAAlphabet{4})
-            @test count_mutations(dnaA, dnaB) == count_mutations(dnaB, dnaA) == (6, 10)
+            @test SpeedDate.count_n_mutations(dnaA, dnaB) == SpeedDate.count_n_mutations(dnaB, dnaA) == (6, 10)
         end
     end
     
