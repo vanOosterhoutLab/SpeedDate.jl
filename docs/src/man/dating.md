@@ -4,6 +4,7 @@ SpeedDate can perform its dating estimate in a few different ways.
 The algorithm is the same in all cases, but you can run it for two sequences,
 or pairwise between many sequences, or using a sliding window.
 
+
 ## Dating a pair of homologous sequences
 
 To estimate the divergence time of a single pair of homologous sequences,
@@ -36,6 +37,7 @@ estimates. E.g.
 count_matrix = count_mutations([seqa, seqb, seqc, seqd])
 t_matrix = estimate_time(m_count, 10e-7) # μ = 10e-7
 ```
+
 
 ## Dating a pair of homologous sequences over a sliding window
 
