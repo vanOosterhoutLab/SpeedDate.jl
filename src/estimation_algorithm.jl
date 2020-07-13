@@ -68,3 +68,8 @@ function estimate_time(m::MutationCount, μ::Float64)
 end
 
 estimate_time(V::Vector{MutationCount}, μ::Float64) = [estimate_time(v, μ) for v in V]
+
+function estimate_time(M::PairwiseListMatrix{MutationCount,false}, μ::Float64)
+    V = [estimate_time(m, μ) for m in getlist(M)]
+    return PairwiseListMatrix(V, false)
+end

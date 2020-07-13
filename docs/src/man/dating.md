@@ -23,6 +23,20 @@ estimates.
 
 ## Pairwise dating of a set of homologous sequences
 
+If you have a set of homologous sequences - say genes - and you want to estimate
+the divergence time between each pair of sequences, SpeedDate allows you to do
+this, giving you a symmetrical matrix as a result, where each cell is the result
+for a pair of sequences.
+
+First you use `count_mutions` on a vector of sequences, which gives you a matrix
+of mutation counts. Then you can use `estimate_time` to get a matrix of time
+estimates. E.g.
+
+```julia
+count_matrix = count_mutations([seqa, seqb, seqc, seqd])
+t_matrix = estimate_time(m_count, 10e-7) # μ = 10e-7
+```
+
 ## Dating a pair of homologous sequences over a sliding window
 
 To estimate the divergence time of a single pair of homologous sequences, using
