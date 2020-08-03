@@ -8,7 +8,7 @@ function read_fasta(filepath::String)
             read!(f, record)
             nread += 1
             recname = FASTA.identifier(record)
-            seqs[recname] = FASTA.sequence(LongSequence{DNAAlphabet{4}}}, record)
+            seqs[recname] = FASTA.sequence(LongSequence{DNAAlphabet{4}}, record)
         end
         if nread > length(seqs)
             error("Only retained $(length(seqs)) of $nread records read. This is commonly caused by sequences with duplicate names. Check your FASTA file.")
