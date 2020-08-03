@@ -13,7 +13,6 @@ import BioSequences: bitindex, encoded_data, index, offset, bitmask
 include("read_sequences.jl")
 include("count_mutations.jl")
 include("estimation_algorithm.jl")
-include("pairwise_distance.jl")
 #include("plotting/visualize.jl")
 
 end # Module
