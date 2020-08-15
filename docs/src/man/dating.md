@@ -1,9 +1,18 @@
 # Dating Sequences
 
-SpeedDate can perform its dating estimate in a few different ways.
-The algorithm is the same in all cases, but you can run it for two sequences,
-or pairwise between many sequences, or using a sliding window.
+You use SpeedDate in a very simple 2 step manner. First, count the mutations
+between two sequences, and then you plug that information, plus a mutation rate
+into the dating function.
 
+You can use the basic functions, which work on a pair of sequences, plus other
+BioJulia utilities to run any analysis of any combination of sequences you may
+like. But there are also some extra methods of the basic functions provided for
+convenience e.g. running sating between sequences in a sliding window, or doing
+a pairwise analysis. The dating algorithm is the same in all cases, but you can
+run it for two sequences, or pairwise between many sequences, or using a sliding
+window.
+
+Let's see some example use cases:
 
 ## Dating a pair of homologous sequences
 

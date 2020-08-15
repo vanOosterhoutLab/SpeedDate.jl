@@ -63,13 +63,13 @@ mutation accumulation between two sequences as a bernoulli process.
     return estimate_time(N, K, µ)
 end
 
-function estimate_time(m::MutationCount, μ::Float64)
+@inline function estimate_time(m::MutationCount, μ::Float64)
     return estimate_time(m.n_sites, m.n_mutations, μ)
 end
 
-estimate_time(V::Vector{MutationCount}, μ::Float64) = [estimate_time(v, μ) for v in V]
+@inline estimate_time(V::Vector{MutationCount}, μ::Float64) = [estimate_time(v, μ) for v in V]
 
-function estimate_time(M::PairwiseListMatrix{MutationCount,false}, μ::Float64)
+@inline function estimate_time(M::PairwiseListMatrix{MutationCount,false}, μ::Float64)
     V = [estimate_time(m, μ) for m in getlist(M)]
     return PairwiseListMatrix(V, false)
 end

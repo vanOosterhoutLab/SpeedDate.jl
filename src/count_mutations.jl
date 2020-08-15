@@ -76,7 +76,7 @@ function count_mutations(A::LongSequence{T}, B::LongSequence{T}, win_size::Int) 
     return V
 end
 
-function count_mutations(seqs::Vector{LongSequence})
+function count_mutations(seqs::Vector{<:LongSequence})
     M = MutationCount[]
     for i in 1:length(seqs)
         for j in (i + 1):length(seqs)
@@ -84,4 +84,8 @@ function count_mutations(seqs::Vector{LongSequence})
         end
     end
     return PairwiseListMatrix(M, false)
+end
+
+function count_mutations(seqs::Dict{String,<:LongSequence})
+    return count_mutations([v for (x, v) in seqs])
 end
