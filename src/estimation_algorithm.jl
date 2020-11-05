@@ -71,5 +71,5 @@ end
 
 @inline function estimate_time(M::PairwiseListMatrix{MutationCount,false}, μ::Float64)
     V = [estimate_time(m, μ) for m in getlist(M)]
-    return PairwiseListMatrix(V, false)
+    return PairwiseListMatrix(V, false, DatingEstimate(0.0, 0.0, 0.0))
 end

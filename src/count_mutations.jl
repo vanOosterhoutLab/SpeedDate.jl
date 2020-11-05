@@ -83,7 +83,7 @@ function count_mutations(seqs::Vector{<:LongSequence})
             push!(M, count_mutations(seqs[i], seqs[j]))
         end
     end
-    return PairwiseListMatrix(M, false)
+    return PairwiseListMatrix(M, false, MutationCount(0,0))
 end
 
 function count_mutations(seqs::Dict{String,<:LongSequence})
