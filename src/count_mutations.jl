@@ -64,7 +64,7 @@ count_mutations(seqa::LongSequence{DNAAlphabet{2}}, seqb::LongSequence{DNAAlphab
 count_mutations(seqa::LongSequence{DNAAlphabet{4}}, seqb::LongSequence{DNAAlphabet{4}}) = MutationCount(count_n_mutations(seqa, seqb)...)
 
 function count_mutations(A::LongSequence{T}, B::LongSequence{T}, win_size::Int) where {T<:DNAAlphabet}
-    L = min(length(A, B))
+    L = min(length(A), length(B))
     last = win_size
     V = Vector{MutationCount}()
     for i in last:L
