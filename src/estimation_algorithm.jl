@@ -11,9 +11,15 @@ struct DatingEstimate
     upper::Float64
 end
 
+DatingEstimate() = DatingEstimate(.0, .0, .0)
+
 lower(x::DatingEstimate) = x.lower
 middle(x::DatingEstimate) = x.middle
 upper(x::DatingEstimate) = x.upper
+
+lower(x::Vector{DatingEstimate}) = lower.(x)
+middle(x::Vector{DatingEstimate}) = middle.(x)
+upper(x::Vector{DatingEstimate}) = upper.(x)
 
 function Base.show(io::IO, de::DatingEstimate)
     println(io, "Coalescence time estimate:\n5%: $(de.lower), 95%: $(de.upper)")
@@ -67,9 +73,15 @@ end
     return estimate_time(m.n_sites, m.n_mutations, μ)
 end
 
-@inline estimate_time(V::Vector{MutationCount}, μ::Float64) = [estimate_time(v, μ) for v in V]
+@inline estimate_time(V::Vector{MutationCount}, μ::Float64) = estimate_time.(V, μ)
+@inline estimate_time(V::Vector{Vector{MutationCount}}, μ::Float64) = estimate_time.(V, μ)
 
-@inline function estimate_time(M::PairwiseListMatrix{MutationCount,false}, μ::Float64)
-    V = [estimate_time(m, μ) for m in getlist(M)]
-    return PairwiseListMatrix(V, false, DatingEstimate(0.0, 0.0, 0.0))
+@inline function estimate_time(M::PairwiseListMatrix{T,false}, μ::Float64) where {T}
+    V = estimate_time(getlist(M), μ)
+    return PairwiseListMatrix(V, false, eltype(V)())
+end
+
+@inline function estimate_time(M::N, μ::Float64) where {N<:NamedArray}
+    V = estimate_time(M.array, μ)
+    return setlabels(V, names(M, 1))
 end

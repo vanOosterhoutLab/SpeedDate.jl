@@ -1,8 +1,8 @@
 module SpeedDate
 
-export read_fasta, count_mutations, estimate_time
+export read_fasta, count_mutations, estimate_time, lower, middle, upper
 
-using BioSequences, FASTX, Distributions, Roots, PairwiseListMatrices
+using BioSequences, FASTX, Distributions, Roots, PairwiseListMatrices, NamedArrays
 
 # For bit-parallel mutation counting
 import Twiddle: enumerate_nibbles, nibble_mask, count_nonzero_nibbles, count_1111_nibbles

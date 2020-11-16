@@ -59,6 +59,8 @@ struct MutationCount
     n_sites::Int
 end
 
+MutationCount() = MutationCount(0, 0)
+
 count_mutations(seqa::LongSequence{<:NucleicAcidAlphabet}, seqb::LongSequence{<:NucleicAcidAlphabet}, args...) = count_mutations(promote(seqa, seqb)..., args...)
 count_mutations(seqa::LongSequence{DNAAlphabet{2}}, seqb::LongSequence{DNAAlphabet{2}}) = MutationCount(count_n_mutations(seqa, seqb), min(length(seqa), length(seqb)))
 count_mutations(seqa::LongSequence{DNAAlphabet{4}}, seqb::LongSequence{DNAAlphabet{4}}) = MutationCount(count_n_mutations(seqa, seqb)...)
@@ -76,16 +78,24 @@ function count_mutations(A::LongSequence{T}, B::LongSequence{T}, win_size::Int) 
     return V
 end
 
-function count_mutations(seqs::Vector{<:LongSequence})
-    M = MutationCount[]
-    for i in 1:length(seqs)
-        for j in (i + 1):length(seqs)
-            push!(M, count_mutations(seqs[i], seqs[j]))
-        end
-    end
-    return PairwiseListMatrix(M, false, MutationCount(0,0))
+function count_mutations(seqs::Vector{<:LongSequence}, args...)
+    N = length(seqs)
+    M = [count_mutations(seqs[i], seqs[j], args...) for i in 1:N for j in (i + 1):N]
+    return PairwiseListMatrix(M, false, eltype(M)())
 end
 
-function count_mutations(seqs::Dict{String,<:LongSequence})
-    return count_mutations([v for (x, v) in seqs])
+function count_mutations(seqs::Vector{<:LongSequence}, names::Vector{String}, args...)
+    return setlabels(count_mutations(seqs, args...), names)
+end
+
+function count_mutations(seqs::Dict{String,L}, args...) where {L<:LongSequence}
+    seqsvec = Vector{L}(undef, length(seqs))
+    names = Vector{String}(undef, length(seqs))
+    i = 1
+    for (k, v) in seqs
+        seqsvec[i] = v
+        names[i] = k
+        i += 1
+    end
+    return count_mutations(seqsvec, names, args...)
 end
