@@ -12,6 +12,16 @@ a pairwise analysis. The dating algorithm is the same in all cases, but you can
 run it for two sequences, or pairwise between many sequences, or using a sliding
 window.
 
+Mutation counts come in the form of a simple `MutationCount` struct that contain
+the number of mutations observed and the number of valid sites used to compare
+(not all sites in a  sequence are counted as valid e.g. '-' and 'N' or other
+ambiguous bases).
+
+The coalescence time estimates come in the form of a simple `DatingEstimate`
+struct that contain the confidence interval for the estimate. You can use
+`lower`, `middle`, and `upper` functions for get the 5%, 50% and 95% values for
+the interval respectively.
+
 Let's see some example use cases:
 
 ## Dating a pair of homologous sequences
@@ -47,6 +57,10 @@ count_matrix = count_mutations([seqa, seqb, seqc, seqd])
 t_matrix = estimate_time(m_count, 10e-7) # μ = 10e-7
 ```
 
+If you have a dictionary of sequences such as you get after using `read_fasta`,
+then `count_mutations` will work with that to produce a matrix of
+mutation counts as well.
+
 
 ## Dating a pair of homologous sequences over a sliding window
 
@@ -60,3 +74,17 @@ E.g.
 window_counts = count_mutations(seqa, seqb, 50) # 50bp sliding window.
 window_estimate = estimate_time(window_counts, 10e-7) # μ = 10e-7
 ```
+
+
+## Dating a set of homologous sequences over a sliding window
+
+Use the `count_mutations` and `estimate_time` functions as for a set of sequences,
+but additionally provide a parameter to `count_mutations` to specify a window size
+in base pairs e.g.
+
+```julia
+seqs = read_fasta("cgd1_2210nuc.fas")
+m_window_pairwise = count_mutations(seqs, 10)
+age_window_pairwise = estimate_time(m_window_pairwise, 10e-8)
+```
+

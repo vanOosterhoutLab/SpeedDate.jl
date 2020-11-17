@@ -14,3 +14,6 @@ To read in a FASTA file use the `read_fasta` function:
 ```julia
 my_seqs = read_fasta("my_sequences.fasta")
 ```
+
+The result is a dictionary of sequences that can be accessed using their name
+in the FASTA file.
